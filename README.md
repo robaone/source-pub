@@ -5,11 +5,11 @@ A public mono repo of all my personal projects
   - [Folder structure](#folder-structure)
 ## Folder structure
 
-```bash
+```txt
 ├── docs
 │   ├── technical-plans
-|       └── ${prefix}-${plan name: snake case}
-│           └── ${plan name: snake case}.md
+|   |   └── ${prefix}-${plan name: snake case}
+│   |       └── ${plan name: snake case}.md
 │   └── README.md
 ├── project1
 │   ├── ${project source code}
