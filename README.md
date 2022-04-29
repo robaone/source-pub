@@ -1,5 +1,5 @@
 # source-pub
-My public mono repo of all my personal projects
+A public mono repo of all my personal projects
 
 - [source](#source)
   - [Folder structure](#folder-structure)
