@@ -6,6 +6,7 @@ A public mono repo of all my personal projects
 ## Folder structure
 
 ```txt
+.
 ├── docs
 │   ├── technical-plans
 |   |   └── ${prefix}-${plan name: snake case}
