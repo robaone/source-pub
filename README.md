@@ -6,7 +6,11 @@ A public mono repo of all my personal projects
 ## Folder structure
 
 ```bash
-.
+├── docs
+│   ├── technical-plans
+|       └── ${prefix}-${plan name: snake case}
+│           └── ${plan name: snake case}.md
+│   └── README.md
 ├── project1
 │   ├── ${project source code}
 │   └── README.md
