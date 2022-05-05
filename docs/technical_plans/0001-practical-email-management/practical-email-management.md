@@ -10,38 +10,47 @@ Email users suffer from email overload.  This can lead to stress, decreased sati
 
 ## Decision
 
-{ the change that we're proposing and/or doing and it can be copied from the issue document, required }
-{ Audience: Everyone }
+Implement the Cherry Picking Method as described in https://site.robaone.com/blog/practical-email-management.  This involves a script that moves emails into the inbox using search terms provided by the user.
+
+This will be implemented in Google App Script and Gmail.
 
 ## Glossary
 
-You can find the glossary [here](https://github.com/robaone/source/blob/main/glossary.md) in case a term in this technical plan is unfamiliar
+You can find the glossary [here](https://github.com/robaone/source-pub/blob/main/glossary.md) in case a term in this technical plan is unfamiliar
 
-- {term}: {definition, optional}  
-{ Audience: Everyone   
-  Reasoning: To ensure that anyone reading this documents understand any terminology used.    
-  Please open a PR with your term(s) in the glossary if they are not already defined }
+- git-flow: A Git branching model that involves the use of feature branches.  It is described [here](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 
-## Technical Risks / Assumptions { suggested, optional }
+## Technical Risks / Assumptions
 
-### ${The identified risk or assumption}
+### Google App Script only works with Gmail
 
-{ an explanation of the identified risk or assumption, optional}
-{ Audience: Everyone
-  Reasoning: In order to understand what it will take to derail this project, readers need to understand what is being assumed or what can risk the quality or completion of this project.  Try to speak clearly and in normal language here. }
+This implementation may be useful for those who are not using Gmail but this implementation will only work with Gmail.
 
-#### Technical Risk Mitigation Strategies { optional }
+#### Technical Risk Mitigation Strategies
 
-1. ${ a desired state that will mitigate the aforementioned risk, required if a risk is identified }
-1. ${ another desired state that will mitigate the aforementioned risk, optional }
+1. Clearly state that this implementation is only designed for Gmail.  It is up to the user to implement a solution for another email service.
 
-{ Reasoning: By declaring the desired state that will mitigate the risk, readers can determine the scope of this project.  The identified risk and milestones go together.  This means that if you have a second identified risk, these sections must be repeated. }
+### App script runtime may exceed the limit
 
-## Prerequisites { optional }
+Google App scripts have a runtime limit of 6 minutes.  This means that a single execution of a script can last no longer than 6 minutes.
 
-- { tasks that need to be done in order to support the features, optional }
-{ Audience: Everyone 
-  Reasoning: This is where you will list chores that need to be done in order to support the features, optional }
+There are other limitations that must be considered.  Those limits are listed here. 
+https://developers.google.com/apps-script/guides/services/quotas
+
+#### Technical Risk Mitigation Strategies
+
+1. Monitor usage during testing and make adjustments as needed.
+1. Utilize batch processing (process limited collections of messages)
+1. Limit timed executions so that it fits within the execution quota.
+
+## Prerequisites
+
+- Create a Google App Script project by installing and configuring clasp
+- Create a deployment workflow that works with git-flow
+  - A feature branch will push code to a DEV project
+  - A merge to develop will publish changes to a DEV project
+  - A release branch will push changes to a PROD project
+  - A merge to main will publish changes to a PROD project
 
 ### Diagrams
 
