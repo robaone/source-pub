@@ -51,6 +51,7 @@ https://developers.google.com/apps-script/guides/services/quotas
   - A merge to develop will publish changes to a DEV project
   - A release branch will push changes to a PROD project
   - A merge to main will publish changes to a PROD project
+- Add unit testing framework, jest
 
 ### Diagrams
 
