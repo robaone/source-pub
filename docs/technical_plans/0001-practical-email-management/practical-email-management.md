@@ -46,6 +46,7 @@ You can find the glossary [here](https://github.com/robaone/source-pub/blob/main
 - git-flow: A Git branching model that involves the use of feature branches.  It is described at https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 - Apps Script: A cloud-based JavaScript plantform.  More details can be found at https://developers.google.com/apps-script/
 - clasp: Command line tools to enable local development of Apps Script projects: More details can be found at https://github.com/google/clasp
+- GMail: A cloud based email service.  More details can be found at https://www.google.com/gmail/about/
 
 ## Technical Risks / Assumptions
 
