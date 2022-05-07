@@ -1,6 +1,6 @@
 # Practical Email Management
 
-{ toc }
+<!-- toc -->
 
 ## Context
 
@@ -76,77 +76,84 @@ And the email has label "Other"
 
 #### Notes
 
-{ supporting notes, optional }
+This can be implemented with a reverse email filter.
 
 #### Code Sample
 
-{ code samples, preferred no, optional }
+Here is an example of a reverse email filter.
 
-#### Designs
-
-- { design references, required when applicable }
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
+  <title>Mail Filters</title>
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <apps:property name='from' value='-important-person@domain.com'/>
+    <apps:property name='hasTheWord' value='label:inbox'/>
+    <apps:property name='label' value='Other'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='sizeOperator' value='s_sl'/>
+    <apps:property name='sizeUnit' value='s_smb'/>
+  </entry>
+</feed>
+```
 
 ### Scenario: Allow an e-mail user to store email queries 
 
 ```gherkin
-{ gherkin language for the scenario.  Use a markdown block. , required }
+When an email user saves a gmail query with data:
+"""
+<QUERY>
+"""
+Then the list of queries is viewable and editable by the user
 ```
+
+Summary
+
+| QUERY                   |
+|-------------------------|
+| from:myfriend@gmail.com |
+| subject:(important)     |
+| from:@myschool.com      |
 
 #### Notes
 
-{ supporting notes, optional }
-
-#### Code Sample
-
-{ code samples, preferred no, optional }
-
-#### Designs
-
-- { design references, required when applicable }
+Using a Google spreadsheet accomplishes this task.
+Benefits include ease of use and compatibility on desktop and mobile devices
+including built in security and API access.
 
 ### Scenario: Move e-mail into inbox that match search queries
 
 ```gherkin
-{ gherkin language for the scenario.  Use a markdown block. , required }
+Given a timer that is triggered every "<INTERVAL>" minutes
+When the timer is triggered
+Then e-mails matching all stored email queries are in the inbox
 ```
 
 #### Notes
 
-{ supporting notes, optional }
-
-#### Code Sample
-
-{ code samples, preferred no, optional }
-
-#### Designs
-
-- { design references, required when applicable }
+Limit the scope of the search to unread emails that are not in the inbox.
+Limit the scope of the search to the last two weeks.
 
 #### UAT Steps
 
-1. { uat steps to be performed }
-{ Audience: The target user 
-  Reasoning: In order to test the feature functionality, the target user needs to know how these features will be tested }
+1. Open your gmail account
+2. Create a label called "Other"
+3. Create an email filter that diverts all emails except those from an important person to the "Other" label
+4. No new emails other than those of the very important person will arrive in the inbox
+4. Save an email query in the spreadsheet
+5. Trigger the script
+7. All emails matching the search query that have not been read, are not in the inbox and were received within the last two weeks will appear in the inbox.
 
 ## Project Checklists
 
-### Data model update
-{ required }
-{ Audience: developers }
-1.Does this technical plan involve updating any existing data models? { yes or no }
-   - { if yes, please describe your backwards-compatibility strategy -- how to handle out-of-date data }
-1. Does this plan involve changes to client-exposed or expected data? { yes or no }
-   - { if yes, please provide here the new agreed-upon data model }
-
 ### Potential for learning / expense
-{ required }
-{ Audience: developers and benefactors  }
-1. Are you using a service or technology that's new?
-   1. { yes or no }
-2. Are you replacing a service or technology?
-   1. { yes or no }
+1. Are you using a service or technology that's new? yes
+   1. Google App Script
+   1. Google clasp
+2. Are you replacing a service or technology? no
 
 ### Technical Debt
-{ optional }
-1. Have you considered addressing any technical debt in this plan?
-    1. { link(s) to technical debt document(s) }
+
+1. Have you considered addressing any technical debt in this plan? no

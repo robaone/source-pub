@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
+	<title>Mail Filters</title>
+	<id>tag:mail.google.com,2008:filters:z0000001632839447196*3036196836837514781</id>
+	<updated>2022-05-07T11:57:23Z</updated>
+	<author>
+		<name>Ansel Robateau</name>
+		<email>robaone@gmail.com</email>
+	</author>
+	<entry>
+		<category term='filter'></category>
+		<title>Mail Filter</title>
+		<id>tag:mail.google.com,2008:filter:z0000001632839447196*3036196836837514781</id>
+		<updated>2022-05-07T11:57:23Z</updated>
+		<content></content>
+		<apps:property name='from' value='-Caleb.Senn@usc.salvationarmy.org -no-reply@classroom.google.com -go-solar@sunrun.com -no-reply@mailer-h.sportsengine.com -parents@saic.edu -william.himes@att.net -ajrobateau@gmail.com -cstarr714@yahoo.com -stephen@greatlakescenter.com -1800usbanks@notifications.usbank.com -no-reply@alertsp.chase.com -voice-noreply@google.com -forms-receipts-noreply@google.com -no-reply@offers.jewelosco.com -no.reply.alerts@chase.com -marksondej@gmail.com -email@shop.meijer.com -linda.himes98@gmail.com -no-reply@comed.com -usbankbillpay@customercenter.net -@oprfhs.org -robaone@gmail.com -jennysuer2@yahoo.com -aj@robaone.com -kyla@robaone.com -reply2refill@rxorder.walgreens.com -1800usbanks@notifications.usbank.com -help@walmart.com -drive-shares-dm-noreply@google.com -digital-no-reply@amazon.com -no-reply@amazon.com'/>
+		<apps:property name='hasTheWord' value='label:inbox'/>
+		<apps:property name='label' value='Other'/>
+		<apps:property name='shouldArchive' value='true'/>
+		<apps:property name='sizeOperator' value='s_sl'/>
+		<apps:property name='sizeUnit' value='s_smb'/>
+	</entry>
+</feed>
