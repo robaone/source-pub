@@ -65,7 +65,43 @@ https://developers.google.com/apps-script/guides/services/quotas
 **As a** email user  
 **I want to** prevent all email from appearing in my inbox except those that I deem important  
 
-### Scenario: { name of the scenario, required }
+### Scenario: Divert all e-mail to a folder other than inbox
+
+```gherkin
+{ gherkin language for the scenario.  Use a markdown block. , required }
+```
+
+#### Notes
+
+{ supporting notes, optional }
+
+#### Code Sample
+
+{ code samples, preferred no, optional }
+
+#### Designs
+
+- { design references, required when applicable }
+
+### Scenario: Allow an e-mail user to store email queries 
+
+```gherkin
+{ gherkin language for the scenario.  Use a markdown block. , required }
+```
+
+#### Notes
+
+{ supporting notes, optional }
+
+#### Code Sample
+
+{ code samples, preferred no, optional }
+
+#### Designs
+
+- { design references, required when applicable }
+
+### Scenario: Move e-mail into inbox that match search queries
 
 ```gherkin
 { gherkin language for the scenario.  Use a markdown block. , required }
