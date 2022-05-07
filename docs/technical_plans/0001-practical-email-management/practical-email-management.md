@@ -66,7 +66,7 @@ https://developers.google.com/apps-script/guides/services/quotas
 
 1. Monitor usage during testing and make adjustments as needed.
 1. Utilize batch processing (process limited collections of messages)
-1. Limit timed executions so that it fits within the execution quota.
+1. Limit timed executions so that it fits within the execution quota.  This means that we should avoid executing the script more than once every 5 minutes.
 
 ## Prerequisites
 
