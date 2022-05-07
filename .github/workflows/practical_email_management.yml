@@ -33,23 +33,48 @@ jobs:
           echo "::set-output name=skip_integration_tests::$(if [[ "$PR_BODY" == *"[x] Skip feature tests against deployed environments"* ]] ; then echo "true"; else echo "false"; fi)"
         env:
           PR_BODY: ${{ steps.PR.outputs.pr_body }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Test
         run: |
           echo "Not yet implemented"
+  push-feature:
+    name: Push feature
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref,'refs/heads/feat/')
+    needs: [test. initialize]
+    steps:
+      - name: Setup
+        uses: actions/checkout@v3
+      - name: Build
+        working-directory: PracticalEmailManagement
+        run: |
+          npm install
+          jq --null-input -c \
+            --arg scriptId "$SCRIPT_ID" \
+            '{"scriptId": $scriptId}' > .clasp.json 
+          npm run build
+        env:
+          SCRIPT_ID: ${{ PRACTICAL_EMAIL_MANAGEMENT_DEV_ID }}
+      - name: deploy
+        working-directory: PracticalEmailManagement
+        run: |
+          echo $GOOGLE_APP_SCRIPT_CREDENTIALS > /home/runner/.clasprc.json
+          npm run push
+        env:
+          GOOGLE_APP_SCRIPT_CREDENTIALS: ${{ secrets.GOOGLE_CLASP_CREDENTIALS }}
   publish-dev:
     name: Public development
     runs-on: ubuntu-latest
     needs: [test, initialize]
     steps:
       - name: Setup
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build
         working-directory: PracticalEmailManagement
         run: |
