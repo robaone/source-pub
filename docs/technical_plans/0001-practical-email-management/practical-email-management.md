@@ -47,6 +47,7 @@ You can find the glossary [here](https://github.com/robaone/source-pub/blob/main
 - Apps Script: A cloud-based JavaScript plantform.  More details can be found at https://developers.google.com/apps-script/
 - clasp: Command line tools to enable local development of Apps Script projects: More details can be found at https://github.com/google/clasp
 - GMail: A cloud based email service.  More details can be found at https://www.google.com/gmail/about/
+- Google Sheets: A cloud based spreadsheet.  More details can be found at https://www.google.com/intl/en-GB/sheets/about/
 
 ## Technical Risks / Assumptions
 
@@ -148,7 +149,7 @@ Summary
 
 #### Notes
 
-Using a Google spreadsheet accomplishes this task.
+Using a Google Sheet accomplishes this task.
 Benefits include ease of use and compatibility on desktop and mobile devices
 including built in security and API access.
 
@@ -160,10 +161,16 @@ When the timer is triggered
 Then e-mails matching all stored email queries are in the inbox
 ```
 
+Summary
+
+| INTERVAL |
+|----------|
+| 5        |
+| 60       |
+
 #### Notes
 
-Limit the scope of the search to unread emails that are not in the inbox.
-Limit the scope of the search to the last two weeks.
+Limit the scope of the search to unread emails that are not in the inbox and received in the last two weeks.
 
 #### UAT Steps
 
@@ -171,7 +178,7 @@ Limit the scope of the search to the last two weeks.
 2. Create a label called "Other"
 3. Create an email filter that diverts all emails except those from an important person to the "Other" label
 4. No new emails other than those of the very important person will arrive in the inbox
-4. Save an email query in the spreadsheet
+4. Save an email query in the Google Sheet
 5. Trigger the script
 7. All emails matching the search query that have not been read, are not in the inbox and were received within the last two weeks will appear in the inbox.
 
