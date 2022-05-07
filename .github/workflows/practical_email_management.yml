@@ -50,6 +50,10 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v2
+      - name: Build
+        working-directory: PracticalEmailManagement
+        run: |
+          npm install
       - name: Publish
         run: |
           echo "Not yet implemented"
