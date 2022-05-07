@@ -1,12 +1,17 @@
 # source-pub
-My public mono repo of all my personal projects
+A public mono repo of all my personal projects
 
 - [source](#source)
   - [Folder structure](#folder-structure)
 ## Folder structure
 
-```bash
+```txt
 .
+├── docs
+│   ├── technical-plans
+|   |   └── ${prefix}-${plan name: snake case}
+│   |       └── ${plan name: snake case}.md
+│   └── README.md
 ├── project1
 │   ├── ${project source code}
 │   └── README.md
