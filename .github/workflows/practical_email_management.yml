@@ -60,7 +60,7 @@ jobs:
             '{"scriptId": $scriptId}' > .clasp.json 
           npm run build
         env:
-          SCRIPT_ID: ${{ PRACTICAL_EMAIL_MANAGEMENT_DEV_ID }}
+          SCRIPT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_DEV_ID }}
       - name: deploy
         working-directory: PracticalEmailManagement
         run: |
