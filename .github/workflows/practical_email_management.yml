@@ -47,7 +47,7 @@ jobs:
     name: Push feature
     runs-on: ubuntu-latest
     if: startsWith(github.ref,'refs/heads/feat/')
-    needs: [test. initialize]
+    needs: [test, initialize]
     steps:
       - name: Setup
         uses: actions/checkout@v3
