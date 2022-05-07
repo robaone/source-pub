@@ -98,6 +98,7 @@ https://developers.google.com/apps-script/guides/services/quotas
 ```gherkin
 Given a GMail account with label "Other"
 When a new email is received
+And the email is not from a very important person
 Then the email is not in the Inbox
 And the email has label "Other"
 ```
