@@ -49,7 +49,7 @@ You can find the glossary [here](https://github.com/robaone/source-pub/blob/main
 
 ### Google App Script only works with Gmail
 
-This implementation may be useful for those who are not using Gmail but this implementation will only work with Gmail.
+This implementation will only work with Gmail.
 
 #### Technical Risk Mitigation Strategies
 
