@@ -59,9 +59,11 @@ https://developers.google.com/apps-script/guides/services/quotas
 ![query storage](https://user-images.githubusercontent.com/1625881/166933114-09c40639-d3fb-4e57-b294-5f89280d6567.png)
 ![app script](https://user-images.githubusercontent.com/1625881/167252609-22b8db43-e63c-440d-a762-30488f9f380a.png)
 
-## Feature: { name of feature, required }
+## Feature: Allow only important email to appear in the inbox
 
-{ user story in "in order / as a / i want " syntax, required }
+**In order to** regain control of email  
+**As a** email user  
+**I want to** prevent all email from appearing in my inbox except those that I deem important  
 
 ### Scenario: { name of the scenario, required }
 
