@@ -55,7 +55,9 @@ https://developers.google.com/apps-script/guides/services/quotas
 
 ### Diagrams
 
-{ any diagrams that support the features. It can be hand drawn. highly preferred, optional }
+![email diversion](https://user-images.githubusercontent.com/1625881/166932743-08f20c31-fe8e-450d-9e9e-609648b0293a.png)
+![query storage](https://user-images.githubusercontent.com/1625881/166933114-09c40639-d3fb-4e57-b294-5f89280d6567.png)
+![app script](https://user-images.githubusercontent.com/1625881/167252609-22b8db43-e63c-440d-a762-30488f9f380a.png)
 
 ## Feature: { name of feature, required }
 
