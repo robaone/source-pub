@@ -68,7 +68,10 @@ https://developers.google.com/apps-script/guides/services/quotas
 ### Scenario: Divert all e-mail to a folder other than inbox
 
 ```gherkin
-{ gherkin language for the scenario.  Use a markdown block. , required }
+Given a GMail account with label "Other"
+When a new email is received
+Then the email is not in the Inbox
+And the email has label "Other"
 ```
 
 #### Notes
