@@ -2,6 +2,31 @@
 
 <!-- toc -->
 
+- [Context](#context)
+- [Decision](#decision)
+- [Glossary](#glossary)
+- [Technical Risks / Assumptions](#technical-risks--assumptions)
+  * [Google App Script only works with Gmail](#google-app-script-only-works-with-gmail)
+    + [Technical Risk Mitigation Strategies](#technical-risk-mitigation-strategies)
+  * [App script runtime may exceed the limit](#app-script-runtime-may-exceed-the-limit)
+    + [Technical Risk Mitigation Strategies](#technical-risk-mitigation-strategies-1)
+- [Prerequisites](#prerequisites)
+  * [Diagrams](#diagrams)
+- [Feature: Allow only important email to appear in the inbox](#feature-allow-only-important-email-to-appear-in-the-inbox)
+  * [Scenario: Divert all e-mail to a folder other than inbox](#scenario-divert-all-e-mail-to-a-folder-other-than-inbox)
+    + [Notes](#notes)
+    + [Code Sample](#code-sample)
+  * [Scenario: Allow an e-mail user to store email queries](#scenario-allow-an-e-mail-user-to-store-email-queries)
+    + [Notes](#notes-1)
+  * [Scenario: Move e-mail into inbox that match search queries](#scenario-move-e-mail-into-inbox-that-match-search-queries)
+    + [Notes](#notes-2)
+    + [UAT Steps](#uat-steps)
+- [Project Checklists](#project-checklists)
+  * [Potential for learning / expense](#potential-for-learning--expense)
+  * [Technical Debt](#technical-debt)
+
+<!-- tocstop -->
+
 ## Context
 
 Email users suffer from email overload.  This can lead to stress, decreased satisfaction and reduced productivity.  Unsolicited email can also include malware and security attacks like email spoofing and phishing.
