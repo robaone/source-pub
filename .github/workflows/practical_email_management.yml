@@ -69,7 +69,7 @@ jobs:
         env:
           GOOGLE_APP_SCRIPT_CREDENTIALS: ${{ secrets.GOOGLE_CLASP_CREDENTIALS }}
   publish-dev:
-    name: Public development
+    name: Publish development
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     needs: [test, initialize]
