@@ -6,6 +6,7 @@ Reference: https://site.robaone.com/blog/practical-email-management
 - [Practical Email Management](#practical-email-management)
 - [Context](#context)
   - [Developer Workspace Setup](#developer-workspace-setup)
+  - [Deployment workflow](#deployment-workflow)
 # Context
 
 This project is intended to be used in Google GMail only and is incompatible with other email services.
@@ -19,3 +20,8 @@ This project is intended to be used in Google GMail only and is incompatible wit
 5. Move the `.clasp.json` file from the `src` folder to this folder.
 6. Push the code with the command, `npx clasp push`.
 7. Copy the `scriptId` from the `.clasp.json` file and store it on the GitHub Secret, `PRACTICAL_EMAIL_MANAGEMENT_DEV_ID`
+
+## Deployment workflow
+
+- A feature branch will push code to the DEV project
+- 
