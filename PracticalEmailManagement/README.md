@@ -20,6 +20,12 @@ This project is intended to be used in Google GMail only and is incompatible wit
 5. Move the `.clasp.json` file from the `src` folder to this folder.
 6. Push the code with the command, `npx clasp push`.
 7. Copy the `scriptId` from the `.clasp.json` file and store it on the GitHub Secret, `PRACTICAL_EMAIL_MANAGEMENT_DEV_ID`
+8. Navigate to the Apps Script project in https://script.google.com 
+9. Press the `Deploy` button and the `New deployment` option.
+10. Beside `Select type` press the Gear icon and choose `web app`.
+11. Set description as `DEV`, Execute as `Me` and Who has access as `Only myself`.
+12. Press `Deploy`.
+13. Copy the deployment id and store it on the GitHub secret, `PRACTICAL_EMAIL_MANAGEMENT_DEPLOYMENT_ID_DEV`.
 
 ## Deployment workflow
 
