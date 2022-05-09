@@ -43,8 +43,8 @@ jobs:
       - name: Test
         run: |
           echo "Not yet implemented"
-  push-feature:
-    name: Push feature
+  push-feature-dev:
+    name: Push feature - DEV
     runs-on: ubuntu-latest
     if: startsWith(github.ref,'refs/heads/feat/') &&  github.steps.flags.output.skip_cd == 'false'
     needs: [test, initialize]
@@ -69,9 +69,49 @@ jobs:
         env:
           GOOGLE_APP_SCRIPT_CREDENTIALS: ${{ secrets.GOOGLE_CLASP_CREDENTIALS }}
   publish-dev:
-    name: Publish development
+    name: Publish development - DEV
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
+    needs: [test, initialize]
+    steps:
+      - name: Setup
+        uses: actions/checkout@v3
+      - name: Build
+        working-directory: PracticalEmailManagement
+        run: |
+          npm install
+      - name: Publish
+        run: |
+          echo "Not yet implemented"
+  push-feature-prod:
+    name: Push feature - PROD
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref,'refs/heads/release/') &&  github.steps.flags.output.skip_cd == 'false'
+    needs: [test, initialize]
+    steps:
+      - name: Setup
+        uses: actions/checkout@v3
+      - name: Build
+        working-directory: PracticalEmailManagement
+        run: |
+          npm install
+          jq --null-input -c \
+            --arg scriptId "$SCRIPT_ID" \
+            '{"scriptId": $scriptId}' > .clasp.json 
+          npm run build
+        env:
+          SCRIPT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_PROD_ID }}
+      - name: deploy
+        working-directory: PracticalEmailManagement
+        run: |
+          echo $GOOGLE_APP_SCRIPT_CREDENTIALS > /home/runner/.clasprc.json
+          npm run push
+        env:
+          GOOGLE_APP_SCRIPT_CREDENTIALS: ${{ secrets.GOOGLE_CLASP_CREDENTIALS }}
+  publish-prod:
+    name: Publish development - PROD
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs: [test, initialize]
     steps:
       - name: Setup
