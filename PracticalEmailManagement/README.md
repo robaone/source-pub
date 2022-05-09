@@ -26,6 +26,7 @@ This project is intended to be used in Google GMail only and is incompatible wit
 11. Set description as `DEV`, Execute as `Me` and Who has access as `Only myself`.
 12. Press `Deploy`.
 13. Copy the deployment id and store it on the GitHub secret, `PRACTICAL_EMAIL_MANAGEMENT_DEPLOYMENT_ID_DEV`.
+14. Create a new script by typing the following command from this folder.  `npx clasp create --type "web app" --title "PracticalEmailManagement-PROD" --rootDir src`
 
 ## Deployment workflow
 
