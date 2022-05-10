@@ -84,6 +84,8 @@ jobs:
             --arg scriptId "$SCRIPT_ID" \
             '{"scriptId": $scriptId}' > .clasp.json 
           npm run build
+        env:
+          SCRIPT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_DEV_ID }}
       - name: Publish
         run: |
           echo $DEPLOYMENT_ID > deploy_id.txt
@@ -131,6 +133,8 @@ jobs:
             --arg scriptId "$SCRIPT_ID" \
             '{"scriptId": $scriptId}' > .clasp.json 
           npm run build
+        env:
+          SCRIPT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_PROD_ID }}
       - name: Publish
         run: |
           echo $DEPLOYMENT_ID > deploy_id.txt
