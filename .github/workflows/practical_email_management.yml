@@ -80,10 +80,14 @@ jobs:
         working-directory: PracticalEmailManagement
         run: |
           npm install
+          jq --null-input -c \
+            --arg scriptId "$SCRIPT_ID" \
+            '{"scriptId": $scriptId}' > .clasp.json 
+          npm run build
       - name: Publish
         run: |
           echo $DEPLOYMENT_ID > deploy_id.txt
-          echo "Not yet implemented"
+          npm run deploy
         env:
           DEPLOYMENT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_DEPLOYMENT_ID_DEV }}
   push-feature-prod:
@@ -123,8 +127,13 @@ jobs:
         working-directory: PracticalEmailManagement
         run: |
           npm install
+          jq --null-input -c \
+            --arg scriptId "$SCRIPT_ID" \
+            '{"scriptId": $scriptId}' > .clasp.json 
+          npm run build
       - name: Publish
         run: |
           echo $DEPLOYMENT_ID > deploy_id.txt
+          npm run deploy
         env:
           DEPLOYMENT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_DEPLOYMENT_ID_PROD }}
