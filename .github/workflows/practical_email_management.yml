@@ -10,6 +10,9 @@ jobs:
   initialize:
     name: Initialize
     runs-on: ubuntu-latest
+    outputs:
+      skip_cd: ${{ steps.flags.outputs.skip_cd }}
+      skip_integration_tests: ${{ steps.flags.output.skip_integration_tests }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.0
@@ -47,8 +50,8 @@ jobs:
   push-feature-dev:
     name: Push feature - DEV
     runs-on: ubuntu-latest
-    if: startsWith(github.ref,'refs/heads/feat/') && ${{ steps.flags.outputs.skip_cd == 'false' }}
     needs: [test, initialize]
+    if: startsWith(github.ref,'refs/heads/feat/') && ${{ needs.initialize.outputs.skip_cd == 'false' }}
     steps:
       - name: Setup
         uses: actions/checkout@v3
