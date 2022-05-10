@@ -90,6 +90,7 @@ jobs:
         env:
           SCRIPT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_DEV_ID }}
       - name: Publish
+        working-directory: PracticalEmailManagement
         run: |
           echo $DEPLOYMENT_ID > deploy_id.txt
           npm run deploy
@@ -141,6 +142,7 @@ jobs:
         env:
           SCRIPT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_PROD_ID }}
       - name: Publish
+        working-directory: PracticalEmailManagement
         run: |
           echo $DEPLOYMENT_ID > deploy_id.txt
           npm run deploy
