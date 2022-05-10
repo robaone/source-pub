@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./build.sh",
-    "push": "cd build && npx clasp push -f"
+    "push": "cd build && npx clasp push -f",
+    "deploy": "cd build && npx clasp push -f && npx clasp deploy -i \"$(cat ../deploy_id.txt)\" -d \"DEV - $(git log --pretty=format:'%s' -1)\" "
   },
   "author": "Ansel Robateau",
   "license": "SEE LICENSE IN ../LICENSE",
