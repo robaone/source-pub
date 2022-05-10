@@ -47,7 +47,7 @@ jobs:
   push-feature-dev:
     name: Push feature - DEV
     runs-on: ubuntu-latest
-    if: startsWith(github.ref,'refs/heads/feat/')
+    if: startsWith(github.ref,'refs/heads/feat/') && github.steps.flags.output.skip_cd == 'false'
     needs: [test, initialize]
     steps:
       - name: Setup
