@@ -40,6 +40,7 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: Test
         run: |
           echo "Not yet implemented"
@@ -51,6 +52,7 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: Build
         working-directory: PracticalEmailManagement
         run: |
@@ -76,6 +78,7 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: Build
         working-directory: PracticalEmailManagement
         run: |
@@ -100,6 +103,7 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: Build
         working-directory: PracticalEmailManagement
         run: |
@@ -125,6 +129,7 @@ jobs:
     steps:
       - name: Setup
         uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: Build
         working-directory: PracticalEmailManagement
         run: |
