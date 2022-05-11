@@ -76,7 +76,7 @@ jobs:
   publish-dev:
     name: Publish development - DEV
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop'
     needs: [test, initialize, push-feature-dev]
     steps:
       - name: Setup
@@ -104,7 +104,7 @@ jobs:
   push-feature-prod:
     name: Push feature - PROD
     runs-on: ubuntu-latest
-    if: startsWith(github.ref,'refs/heads/release/') &&  github.steps.flags.output.skip_cd == 'false'
+    if: startsWith(github.ref,'refs/heads/release/') && ${{ needs.initialize.outputs.skip_cd == 'false' }}
     needs: [test, initialize]
     steps:
       - name: Setup
