@@ -10,6 +10,9 @@ jobs:
   initialize:
     name: Initialize
     runs-on: ubuntu-latest
+    outputs:
+      skip_cd: ${{ steps.flags.outputs.skip_cd }}
+      skip_integration_tests: ${{ steps.flags.output.skip_integration_tests }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.0
@@ -47,8 +50,8 @@ jobs:
   push-feature-dev:
     name: Push feature - DEV
     runs-on: ubuntu-latest
-    if: startsWith(github.ref,'refs/heads/feat/') &&  github.steps.flags.output.skip_cd == 'false'
     needs: [test, initialize]
+    if: startsWith(github.ref,'refs/heads/feat/') #&& ${{ needs.initialize.outputs.skip_cd == 'false' }}
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -74,7 +77,7 @@ jobs:
     name: Publish development - DEV
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
-    needs: [test, initialize]
+    needs: [test, initialize, push-feature-dev]
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -90,15 +93,18 @@ jobs:
         env:
           SCRIPT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_DEV_ID }}
       - name: Publish
+        working-directory: PracticalEmailManagement
         run: |
+          echo $GOOGLE_APP_SCRIPT_CREDENTIALS > /home/runner/.clasprc.json
           echo $DEPLOYMENT_ID > deploy_id.txt
           npm run deploy
         env:
+          GOOGLE_APP_SCRIPT_CREDENTIALS: ${{ secrets.GOOGLE_CLASP_CREDENTIALS }}
           DEPLOYMENT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_DEPLOYMENT_ID_DEV }}
   push-feature-prod:
     name: Push feature - PROD
     runs-on: ubuntu-latest
-    if: startsWith(github.ref,'refs/heads/release/') &&  github.steps.flags.output.skip_cd == 'false'
+    if: startsWith(github.ref,'refs/heads/release/') #&& ${{ needs.initialize.outputs.skip_cd == 'false' }}
     needs: [test, initialize]
     steps:
       - name: Setup
@@ -125,7 +131,7 @@ jobs:
     name: Publish development - PROD
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: [test, initialize]
+    needs: [test, initialize, push-feature-prod]
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -141,8 +147,11 @@ jobs:
         env:
           SCRIPT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_PROD_ID }}
       - name: Publish
+        working-directory: PracticalEmailManagement
         run: |
+          echo $GOOGLE_APP_SCRIPT_CREDENTIALS > /home/runner/.clasprc.json
           echo $DEPLOYMENT_ID > deploy_id.txt
           npm run deploy
         env:
+          GOOGLE_APP_SCRIPT_CREDENTIALS: ${{ secrets.GOOGLE_CLASP_CREDENTIALS }}
           DEPLOYMENT_ID: ${{ secrets.PRACTICAL_EMAIL_MANAGEMENT_DEPLOYMENT_ID_PROD }}
