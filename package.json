@@ -1,6 +1,6 @@
 {
   "name": "source-pub",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Ansel Robateau's source code ",
   "dependencies": {
     "markdown-toc": "^1.2.0"
