@@ -51,7 +51,7 @@ jobs:
     name: Push feature - DEV
     runs-on: ubuntu-latest
     needs: [test, initialize]
-    if: startsWith(github.ref,'refs/heads/feat/') #&& ${{ needs.initialize.outputs.skip_cd == 'false' }}
+    if: github.ref == 'refs/heads/develop' || startsWith(github.ref,'refs/heads/feat/') #&& ${{ needs.initialize.outputs.skip_cd == 'false' }}
     steps:
       - name: Setup
         uses: actions/checkout@v3
@@ -104,7 +104,7 @@ jobs:
   push-feature-prod:
     name: Push feature - PROD
     runs-on: ubuntu-latest
-    if: startsWith(github.ref,'refs/heads/release/') #&& ${{ needs.initialize.outputs.skip_cd == 'false' }}
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref,'refs/heads/release/') #&& ${{ needs.initialize.outputs.skip_cd == 'false' }}
     needs: [test, initialize]
     steps:
       - name: Setup
