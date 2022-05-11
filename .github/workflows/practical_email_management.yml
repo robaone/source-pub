@@ -131,7 +131,7 @@ jobs:
     name: Publish development - PROD
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: [test, initialize]
+    needs: [test, initialize, push-feature-prod]
     steps:
       - name: Setup
         uses: actions/checkout@v3
