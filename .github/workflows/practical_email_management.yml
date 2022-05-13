@@ -35,7 +35,8 @@ jobs:
       - uses: actions/setup-node@v3
       - name: Test
         run: |
-          echo "Not yet implemented"
+          npm install
+          npm run test
   push-feature-dev:
     name: Push feature - DEV
     runs-on: ubuntu-latest
