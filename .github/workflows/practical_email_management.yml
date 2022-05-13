@@ -29,6 +29,7 @@ jobs:
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
+    working-directory: PracticalEmailManagement
     steps:
       - name: Setup
         uses: actions/checkout@v3
