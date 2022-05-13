@@ -7,6 +7,7 @@ Reference: https://site.robaone.com/blog/practical-email-management
 - [Context](#context)
   - [Developer Workspace Setup](#developer-workspace-setup)
   - [Deployment workflow](#deployment-workflow)
+  - [Unit Testing](#unit-testing)
 # Context
 
 This project is intended to be used in Google GMail only and is incompatible with other email services.
@@ -37,3 +38,15 @@ This project is intended to be used in Google GMail only and is incompatible wit
 - Merging to develop will publish code to the DEV project
 - A release branch will push code to the PROD project
 - Merging to the main branch will publish code to the PROD project
+
+## Unit Testing
+
+This project uses Jest for unit testing
+
+Test suites are located in the `tests` folder.
+
+To run unit tests, run the following command.
+
+```bash
+npm run test
+```
