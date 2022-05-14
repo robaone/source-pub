@@ -34,8 +34,10 @@ jobs:
         uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - name: Test
+        working-directory: PracticalEmailManagement
         run: |
-          echo "Not yet implemented"
+          npm install
+          npm run test
   push-feature-dev:
     name: Push feature - DEV
     runs-on: ubuntu-latest
