@@ -27,6 +27,12 @@ To do this, take the following steps.
 5. Select `[ ] Skip the Inbox (Archive it)` and `[ ] Apply the Label:` and choose or create label `Other`
 6. Press `Create Filter`
 
+Create a Google Spreadsheet to be used to store your email queries.
+
+1. Go to https://sheets.new
+2. Set the name of the Sheet to `Gmail Filters`
+3. Bookmark the Sheet or copy and store the url for easy access.
+
 ## Developer Workspace Setup
 
 1. Run `npm install` to install the google/clasp node module.
