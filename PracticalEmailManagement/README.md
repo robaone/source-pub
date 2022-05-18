@@ -5,12 +5,27 @@ Reference: https://site.robaone.com/blog/practical-email-management
 
 - [Practical Email Management](#practical-email-management)
 - [Context](#context)
+- [How to guide](#how-to-guide)
   - [Developer Workspace Setup](#developer-workspace-setup)
   - [Deployment workflow](#deployment-workflow)
   - [Unit Testing](#unit-testing)
+
 # Context
 
 This project is intended to be used in Google GMail only and is incompatible with other email services.
+
+# How to guide
+
+The first step in adopting this process in Gmail is to divert all emails from the inbox into a folder called `Other`.
+
+To do this, take the following steps.
+
+1. Open Gmail in the browser
+2. Click the advanced search button on the right of the search bar
+3. Type `-$YOUR_EMAIL_ADDRESS` in the `from` field (eg. `-bob@email.com`)
+4. Press `Create Filter`
+5. Select `[ ] Skip the Inbox (Archive it)` and `[ ] Apply the Label:` and choose or create label `Other`
+6. Press `Create Filter`
 
 ## Developer Workspace Setup
 
