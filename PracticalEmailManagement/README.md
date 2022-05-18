@@ -31,7 +31,7 @@ Create a Google Spreadsheet to be used to store your email queries.
 
 1. Go to https://sheets.new
 2. Set the name of the Sheet to `Gmail Filters`
-3. Bookmark the Sheet for easy access
+3. Bookmark the Sheet or copy and store the url for easy access.
 
 ## Developer Workspace Setup
 
