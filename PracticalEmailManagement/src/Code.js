@@ -1,7 +1,7 @@
 // start-app-script
-function doGet(request) {
-  console.log("Hello World");
+function recoverEmails(request) {
+  const container = configure();
+  const result = container.recoveryService.run();
+  console.log(JSON.stringify(result));
 }
 // end-app-script
-
-module.exports = doGet;
