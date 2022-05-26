@@ -10,7 +10,6 @@ class MailRecovery {
       query => this.emailService.search(query).map(email => {
       return this.emailService.move(email,'Inbox');
     })).flat().filter(x => x !== undefined);
-    console.log(JSON.stringify(emails));
     return {
       recovered:emails,
       queries
@@ -22,6 +21,7 @@ class MailRecovery {
     });
   }
 }
+
 // end-app-script
 
 module.exports = MailRecovery;
