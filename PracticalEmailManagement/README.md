@@ -33,12 +33,6 @@ Create a Google Spreadsheet to be used to store your email queries.
 2. Set the name of the Sheet to `Gmail Filters`
 3. Bookmark the Sheet or copy and store the url for easy access.
 
-Create the apps script that will move emails into the inbox.
-
-1. In the Google Sheet, select `Extensions > Apps Script` from the menu
-2. If you are using the classic editor, switch to the new editor
-3. Give the Script a name like `Gmail Filters`
-4. 
 
 ## Developer Workspace Setup
 
