@@ -33,6 +33,7 @@ Create a Google Spreadsheet to be used to store your email queries.
 2. Set the name of the Sheet to `Gmail Filters`
 3. Bookmark the Sheet or copy and store the url for easy access.
 
+
 ## Developer Workspace Setup
 
 1. Run `npm install` to install the google/clasp node module.
