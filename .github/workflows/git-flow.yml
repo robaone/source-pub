@@ -1,0 +1,315 @@
+name: GitFlow Workflow
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - feature/*
+      - develop
+      - main
+
+env:
+  WORKFLOW_VERSION: 1.1.0
+jobs:
+  initialize:
+    name: Initialize
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Print all github variables
+        run: echo "$JSON"
+        env:
+          JSON: ${{ toJson(github) }}
+      - uses: actions/checkout@v3
+      - id: files
+        uses: tj-actions/changed-files@v35.5.6
+      - name: List files modified
+        id: project_list
+        run: |
+          echo ${{ steps.files.outputs.all_changed_files }} | sed -E 's/ /\n/g' > modified_files.txt
+          echo "## Modified Files"
+          cat modified_files.txt
+          cat modified_files.txt | ./scripts/parse_file_list_for_projects.sh > project_list.txt
+      - name: Set Dynamic Matrix
+        id: setmatrix
+        run: |
+          echo "## Project List"
+          cat project_list.txt
+          matrixStringifiedObject="$(cat project_list.txt | ./scripts/generate_matrix.sh)"
+          echo "## Matrix Object"
+          echo "$matrixStringifiedObject"
+          echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
+    outputs:
+      matrix: ${{ steps.setmatrix.outputs.matrix }}
+      files: ${{ steps.files.outputs.all_changed_files }}
+  unit-tests:
+    name: Unit Tests
+    needs: [initialize]
+    strategy:
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install Dependencies
+        run: |
+          sudo apt install figlet
+        working-directory: ${{ matrix.project }}
+      - name: Setup Node
+        run: |
+          npm i
+        working-directory: ${{ matrix.project }}
+      - name: Install Dependencies
+        run: |
+          npm run install:dependencies
+        env:
+          PROJECT: ${{ matrix.project }}
+      - name: Run Unit Tests
+        run: |
+          npm run test
+        working-directory: ${{ matrix.project }}
+  feature-tests:
+    name: Feature Tests
+    needs: [initialize]
+    environment: sandbox
+    strategy:
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Setup Node
+        run: |
+          npm i
+        working-directory: ${{ matrix.project }}
+      - name: Install Dependencies
+        run: |
+          npm run install:dependencies
+        env:
+          PROJECT: ${{ matrix.project }}
+      - name: Run Feature Tests
+        run: |
+          npm run test:e2e
+        working-directory: ${{ matrix.project }}
+        env:
+          MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+  deploy-check:
+    name: Deployment Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    if: |
+      !contains(github.event.pull_request.body, '[x] Skip CD')
+    steps:
+      - name: Announce Deployment
+        run: echo "This will be deployed"
+  check_release:
+    name: Check Release
+    timeout-minutes: 5
+    if: |
+      startsWith(github.head_ref,'release/v') || startsWith(github.head_ref,'hotfix/v') ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install Dependencies
+        run: |
+          sudo apt install figlet
+      - name: Test the script
+        run: |
+          scripts/tests/check_release_version_test.sh "$(pwd)/scripts/check_release_version.sh" "$(pwd)/scripts/tests"
+      - name: Confirm Release Version
+        run: |
+          scripts/check_release_version.sh
+        env:
+          CURRENT_BRANCH: ${{ github.head_ref }}
+          TARGET_BRANCH: ${{ github.base_ref }}
+          EVENT: ${{ github.event_name }}
+  deploy_pull_request:
+    name: Deploy Pull Request
+    needs: [deploy-check, unit-tests, feature-tests, initialize]
+    environment: sandbox
+    strategy:
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: |
+      github.event_name == 'pull_request' &&
+      github.base_ref == 'develop' &&
+      !(startsWith(github.head_ref,'release/v') || startsWith(github.head_ref,'hotfix/v'))
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Setup Node
+        run: |
+          npm i
+        working-directory: ${{ matrix.project }}
+      - name: Install Dependencies
+        run: |
+          npm run install:dependencies
+        env:
+          PROJECT: ${{ matrix.project }}
+      - name: Deploy Pull Request
+        run: |
+          echo "Deploy IDENTIFIER=$IDENTIFIER to a pull request environment"
+          npm run deploy:pr
+        working-directory: ${{ matrix.project }}
+        env:
+          MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          IDENTIFIER: ${{ github.event.number }}
+  deploy_to_develop:
+    name: Deploy to Develop
+    needs: [deploy-check, unit-tests, feature-tests, initialize]
+    environment: develop
+    strategy:
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/develop'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Setup Node
+        run: |
+          npm i
+          sudo apt-get install awscli
+        working-directory: ${{ matrix.project }}
+      - name: Install Dependencies
+        run: |
+          npm run install:dependencies
+        env:
+          PROJECT: ${{ matrix.project }}
+      - name: Deploy to Develop
+        run: |
+          echo "Deploy to the develop environment" 
+          npm run deploy:develop
+        working-directory: ${{ matrix.project }}
+        env:
+          MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+  deploy_to_staging:
+    name: Deploy to Staging
+    needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
+    environment: staging
+    strategy:
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: |
+      github.event_name == 'pull_request' && github.base_ref == 'main' &&
+      (startsWith(github.head_ref, 'release/v') || startsWith(github.head_ref, 'hotfix/v'))
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Setup Node
+        run: |
+          npm i
+        working-directory: ${{ matrix.project }}
+      - name: Install Dependencies
+        run: |
+          npm run install:dependencies
+        env:
+          PROJECT: ${{ matrix.project }}
+      - name: Deploy to Staging
+        run: |
+          echo "Deploy to the staging environment"
+          npm run deploy:staging
+        working-directory: ${{ matrix.project }}
+        env:
+          MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+  semantic_release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [deploy-check, unit-tests, feature-tests, check_release]
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
+    outputs:
+      new-tag: ${{ steps.get-new-release.output.new-tag }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Get Current Release
+        run: |
+          git fetch
+          CURRENT_TAG=$(./scripts/git_latest_version_tag.sh)
+          echo ::set-output name=current-tag::$CURRENT_TAG
+          echo Current Tag: $CURRENT_TAG
+        id: get-current-release
+      - name: Run semantic release
+        run: npx semantic-release@20.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get New Release
+        run: |
+          git fetch
+          NEW_TAG=$(scripts/git_latest_version_tag.sh)
+          echo ::set-output name=new-tag::$NEW_TAG
+          echo New Tag: $NEW_TAG
+        id: get-new-release
+  deploy_to_production:
+    name: Deploy to Production
+    needs: [semantic_release,initialize]
+    environment: production
+    strategy:
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Print all github variables
+        run: echo "$JSON"
+        env:
+          JSON: ${{ toJson(github) }}
+      - name: Setup Node
+        run: |
+          npm i
+        working-directory: ${{ matrix.project }}
+      - name: Install Dependencies
+        run: |
+          npm run install:dependencies
+        env:
+          PROJECT: ${{ matrix.project }}
+      - name: Deploy to Production
+        run: |
+          echo "Deploy to the production environment"
+          npm run deploy:production
+        working-directory: ${{ matrix.project }}
+        env:
+          MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+
