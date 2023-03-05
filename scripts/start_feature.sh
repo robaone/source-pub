@@ -6,6 +6,10 @@
 # This script is intended to be run from the root of the repository
 
 if [ "$GIT_PATH" == "" ]; then
+  if [ -z "$(which git)" ]; then
+    echo "git command not found. Please ensure that git is installed and in your PATH."
+    exit 1
+  fi
   GIT_PATH=$(which git)
 fi
 # prompt the user for a feature name
