@@ -21,14 +21,35 @@ export FEATURE_NAME="My Feature"
 export TICKET_ID="1"
 
 # a temp file to store the argument file
-export ARGUMENT_FILE1=$(mktemp)
-export MOCK_RESPONSE1=""
-export GIT_PATH=$SCRIPT_DIR/capture_arguments1.sh
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[{}, {}, {}, {}]'
+export GIT_PATH=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 ACTUAL_RESULT=$($CMD)
 
 # THEN
-assert_equals "checkout develop
+assert_equals "show-ref --verify --quiet refs/heads/feature/1-my-feature
+checkout develop
 pull
-checkout -b feature/1-my-feature" "$(cat $ARGUMENT_FILE1)"
+checkout -b feature/1-my-feature" "$(cat $MOCK_ARGUMENT_FILE)"
+
+echo Scenario: Start a feature by creating a new branch when the branch already exists
+
+# GIVEN
+export FEATURE_NAME="My Feature"
+export TICKET_ID="1"
+
+# a temp file to store the argument file
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[{"exit": 1}]'
+export GIT_PATH=$SCRIPT_DIR/mock_cmd.sh
+
+# WHEN
+ACTUAL_RESULT=$($CMD)
+
+# THEN
+assert_equals "1" "$?"
+assert_equals "show-ref --verify --quiet refs/heads/feature/1-my-feature" "$(cat $MOCK_ARGUMENT_FILE)"
