@@ -34,8 +34,8 @@ fi
 
 branch_name="feature/${ticket_id}-${skewer_case_feature_name}"
 
-$GIT_PATH show-ref --verify --quiet "refs/heads/$branch_name"
-if [ "$?" != "0" ]; then
+MATCHING_BRANCH="$($GIT_PATH branch -r | grep "${branch_name}$")"
+if [ "$MATCHING_BRANCH" != "" ]; then
   echo "Branch $branch_name already exists. Please choose a different feature name or ticket id."
   exit 1
 fi
