@@ -36,7 +36,7 @@ export GIT_PATH=$SCRIPT_DIR/mock_cmd.sh
 ACTUAL_RESULT=$($CMD)
 
 # THEN
-assert_equals "show-ref --verify --quiet refs/heads/feature/1-my-feature
+assert_equals "branch -r
 checkout develop
 pull
 checkout -b feature/1-my-feature" "$(cat $MOCK_ARGUMENT_FILE)"
@@ -50,7 +50,7 @@ export TICKET_ID="1"
 # a temp file to store the argument file
 export MOCK_ARGUMENT_FILE=$(mktemp)
 export MOCK_TRACKING_FILE=$(mktemp)
-export MOCK_RESPONSES='[{"exit": 1}]'
+export MOCK_RESPONSES='[{"stdout": "  origin/feature/1-my-feature"}]'
 export GIT_PATH=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
@@ -58,4 +58,4 @@ ACTUAL_RESULT=$($CMD)
 
 # THEN
 assert_equals "1" "$?"
-assert_equals "show-ref --verify --quiet refs/heads/feature/1-my-feature" "$(cat $MOCK_ARGUMENT_FILE)"
+assert_equals "branch -r" "$(cat $MOCK_ARGUMENT_FILE)"
