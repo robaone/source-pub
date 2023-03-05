@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# This script prints all arguments to a file
+# This script is used to mock the execution of a command.
 
-if [ "$ARGUMENT_FILE" == "" ]; then
-  echo "Please set the ARGUMENT_FILE environment variable"
+if [ "$MOCK_ARGUMENT_FILE" == "" ]; then
+  echo "Please set the MOCK_ARGUMENT_FILE environment variable"
   exit 1
 fi
 
@@ -46,7 +46,7 @@ MOCK_TRACKING=$(echo $MOCK_TRACKING | jq ".execution_count = $EXECUTION_COUNT")
 # write the file
 echo $MOCK_TRACKING > $MOCK_TRACKING_FILE
 
-echo "$@" >> $ARGUMENT_FILE
+echo "$@" >> $MOCK_ARGUMENT_FILE
 # echo "ARGUMENTS: $@" >&2
 echo $MOCK_RESPONSE
 if [ "$MOCK_STDERR" != "null" ]; then
