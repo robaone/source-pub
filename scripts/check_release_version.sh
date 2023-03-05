@@ -52,6 +52,6 @@ if [ "$NEXT_PREDICTED_RELEASE" != "$PACKAGE_VERSION" ]; then
 See: https://github.com/casechek/Answers/discussions/158"
   exit 1
 else
-  echo "Everyting is good.  Ready to release"
+  echo "Everything is good.  Ready to release"
   $FIGLET_PATH "version $PACKAGE_VERSION"
 fi

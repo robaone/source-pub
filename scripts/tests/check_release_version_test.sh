@@ -34,7 +34,7 @@ ACTUAL_RESULT="$($CMD)"
 
 # THEN
 
-assert_equals "Everyting is good.  Ready to release
+assert_equals "Everything is good.  Ready to release
 1.0.0" "$ACTUAL_RESULT"
 assert_equals "rev-parse --abbrev-ref HEAD
 -r .version ./package.json
