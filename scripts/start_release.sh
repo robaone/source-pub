@@ -52,11 +52,11 @@ function create_pull_request() {
 }
 
 if [ "$(pull_request_exists release/v$PREDICTED_VERSION main)" == "false" ]; then
-  create_pull_request release/v$PREDICTED_VERSION main "Release v$PREDICTED_VERSION to main" "Release v$PREDICTED_VERSION"
+  create_pull_request release/v$PREDICTED_VERSION main "release v$PREDICTED_VERSION to main" "Release v$PREDICTED_VERSION"
 fi
 
 # create a pull request that targets the develop branch if it does not exist
 if [ "$(pull_request_exists release/v$PREDICTED_VERSION develop)" == "false" ]; then
-  create_pull_request release/v$PREDICTED_VERSION develop "Release v$PREDICTED_VERSION to develop" "Release v$PREDICTED_VERSION"
+  create_pull_request release/v$PREDICTED_VERSION develop "release v$PREDICTED_VERSION to develop ↣" "Release v$PREDICTED_VERSION"
 fi
 

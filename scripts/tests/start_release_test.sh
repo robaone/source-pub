@@ -35,9 +35,9 @@ assert_equals "checkout release/v1.0.0
 checkout -b release/v1.0.0
 push -u origin release/v1.0.0
 pr list --base main --head release/v1.0.0 --json number --jq .[0].number
-pr create --base main --head release/v1.0.0 --title Release v1.0.0 to main --body Release v1.0.0
+pr create --base main --head release/v1.0.0 --title release v1.0.0 to main --body Release v1.0.0
 pr list --base develop --head release/v1.0.0 --json number --jq .[0].number
-pr create --base develop --head release/v1.0.0 --title Release v1.0.0 to develop --body Release v1.0.0" "$(cat $ARGUMENT_FILE)"
+pr create --base develop --head release/v1.0.0 --title release v1.0.0 to develop ↣ --body Release v1.0.0" "$(cat $ARGUMENT_FILE)"
 
 echo Scenario: Start a release by creating the release branch and the pull requests where the release branch already exists
 
@@ -59,9 +59,9 @@ ACTUAL_RESULT=$($CMD)
 assert_equals "checkout release/v1.0.0
 push -u origin release/v1.0.0
 pr list --base main --head release/v1.0.0 --json number --jq .[0].number
-pr create --base main --head release/v1.0.0 --title Release v1.0.0 to main --body Release v1.0.0
+pr create --base main --head release/v1.0.0 --title release v1.0.0 to main --body Release v1.0.0
 pr list --base develop --head release/v1.0.0 --json number --jq .[0].number
-pr create --base develop --head release/v1.0.0 --title Release v1.0.0 to develop --body Release v1.0.0" "$(cat $ARGUMENT_FILE)"
+pr create --base develop --head release/v1.0.0 --title release v1.0.0 to develop ↣ --body Release v1.0.0" "$(cat $ARGUMENT_FILE)"
 
 echo Scenario: Start a release by creating the release branch and the pull requests where the release branch already exists and the pull request to main already exists
 
@@ -84,7 +84,7 @@ assert_equals "checkout release/v1.0.0
 push -u origin release/v1.0.0
 pr list --base main --head release/v1.0.0 --json number --jq .[0].number
 pr list --base develop --head release/v1.0.0 --json number --jq .[0].number
-pr create --base develop --head release/v1.0.0 --title Release v1.0.0 to develop --body Release v1.0.0" "$(cat $ARGUMENT_FILE)"
+pr create --base develop --head release/v1.0.0 --title release v1.0.0 to develop ↣ --body Release v1.0.0" "$(cat $ARGUMENT_FILE)"
 
 echo Scenario: Start a release by creating the release branch and the pull requests where the release branch already exists and the pull request to develop already exists
 
@@ -106,7 +106,7 @@ ACTUAL_RESULT=$($CMD)
 assert_equals "checkout release/v1.0.0
 push -u origin release/v1.0.0
 pr list --base main --head release/v1.0.0 --json number --jq .[0].number
-pr create --base main --head release/v1.0.0 --title Release v1.0.0 to main --body Release v1.0.0
+pr create --base main --head release/v1.0.0 --title release v1.0.0 to main --body Release v1.0.0
 pr list --base develop --head release/v1.0.0 --json number --jq .[0].number" "$(cat $ARGUMENT_FILE)"
 
 
