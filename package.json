@@ -13,6 +13,7 @@
     "deploy:staging": "echo \"Not yet implemented\"",
     "deploy:production": "echo \"Not yet implemented\"",
     "install:dependencies": "echo \"Not yet implemented\"",
+    "start:release": "./scripts/start_release.sh",
     "test": "./scripts/run_tests.sh",
     "test:e2e": "echo \"Not yet implemented\""
   },
