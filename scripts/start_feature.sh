@@ -39,3 +39,4 @@ fi
 $GIT_PATH checkout develop && \
 $GIT_PATH pull && \
 $GIT_PATH checkout -b $branch_name
+exit $?
