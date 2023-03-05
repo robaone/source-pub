@@ -2,6 +2,11 @@
 
 CMD=$1
 
+if [ "$CMD" == "" ]; then
+  echo "usage: $0 [command]"
+  exit 1
+fi
+
 function assert_equals {
   if [ "$1" != "$2" ]; then
     echo "Expected: $1"
