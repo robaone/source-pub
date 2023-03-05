@@ -17,7 +17,6 @@ if [ "$MOCK_RESPONSES" == "" ]; then
   exit 1
 fi
 
-
 # read the file
 function read_tracking_file() {
   MOCK_TRACKING=$(cat $MOCK_TRACKING_FILE)

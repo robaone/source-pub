@@ -8,6 +8,7 @@
   "devDependencies": {},
   "scripts": {
     "build": "echo \"Not yet implemented\"",
+    "start:feature": "./scripts/start_feature.sh",
     "deploy:pr": "echo \"Not yet implemented\"",
     "deploy:develop": "echo \"Not yet implemented\"",
     "deploy:staging": "echo \"Not yet implemented\"",
