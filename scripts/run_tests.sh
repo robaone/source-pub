@@ -1,7 +1,6 @@
 #!/bin/bash
 
 FILES=$(dirname $0)/tests/*_test.sh
-export PACKAGE_PATH=$(dirname $0)/temp
 
 function run_tests() {
   local files=$1
