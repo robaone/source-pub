@@ -26,5 +26,29 @@
   "bugs": {
     "url": "https://github.com/robaone/source-pub/issues"
   },
-  "homepage": "https://github.com/robaone/source-pub#readme"
+  "homepage": "https://github.com/robaone/source-pub#readme",
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "develop",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "linkReferences": false
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "successComment": false,
+          "failComment": false
+        }
+      ]
+    ]
+  }
 }
