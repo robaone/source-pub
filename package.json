@@ -1,6 +1,6 @@
 {
   "name": "source-pub",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Ansel Robateau's source code ",
   "dependencies": {
     "markdown-toc": "^1.2.0"
@@ -18,14 +18,34 @@
     "test": "./scripts/run_tests.sh",
     "test:e2e": "echo \"Not yet implemented\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/robaone/source-pub.git"
-  },
   "author": "Ansel Robateau",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
     "url": "https://github.com/robaone/source-pub/issues"
   },
-  "homepage": "https://github.com/robaone/source-pub#readme"
+  "homepage": "https://github.com/robaone/source-pub#readme",
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "develop",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "linkReferences": false
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "successComment": false,
+          "failComment": false
+        }
+      ]
+    ]
+  }
 }

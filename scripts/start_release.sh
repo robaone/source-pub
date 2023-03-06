@@ -71,4 +71,3 @@ if [ "$(pull_request_exists release/v$PREDICTED_VERSION develop)" == "false" ]; 
     exit 1
   fi
 fi
-
