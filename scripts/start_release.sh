@@ -6,7 +6,7 @@
 # create a pull request that targets the main branch and a pull request
 # that targets the develop branch.
 
-SCRIPT_DIR=$(cd $(dirname $0); pwd)
+SCRIPT_DIR="$(cd $(dirname $0); pwd)"
 
 if [ "$PREDICTED_VERSION" == "" ]; then
   PREDICTED_VERSION=$($SCRIPT_DIR/git_predict_next_version.sh)
@@ -22,6 +22,9 @@ fi
 
 # create a new branch if it does not exist or switch to it if it does
 $GIT_PATH checkout release/v$PREDICTED_VERSION || $GIT_PATH checkout -b release/v$PREDICTED_VERSION
+if [ "$?" != "0" ]; then
+  exit 1
+fi
 
 # push the branch to the remote repository
 $GIT_PATH push -u origin release/v$PREDICTED_VERSION
@@ -35,6 +38,9 @@ function pull_request_exists() {
   local target_branch=$2
   # use gh to check if the pull request exists
   local pull_request=$($GH_PATH pr list --base $target_branch --head $branch --json number --jq '.[0].number')
+  if [ "$?" != "0" ]; then
+    exit 1
+  fi
   if [ "$pull_request" == "" ]; then
     echo "false"
   else
@@ -52,11 +58,16 @@ function create_pull_request() {
 }
 
 if [ "$(pull_request_exists release/v$PREDICTED_VERSION main)" == "false" ]; then
-  create_pull_request release/v$PREDICTED_VERSION main "Release v$PREDICTED_VERSION to main" "Release v$PREDICTED_VERSION"
+  create_pull_request release/v$PREDICTED_VERSION main "release v$PREDICTED_VERSION to main" "Release v$PREDICTED_VERSION"
+  if [ "$?" != "0" ]; then
+    exit 1
+  fi
 fi
 
 # create a pull request that targets the develop branch if it does not exist
 if [ "$(pull_request_exists release/v$PREDICTED_VERSION develop)" == "false" ]; then
-  create_pull_request release/v$PREDICTED_VERSION develop "Release v$PREDICTED_VERSION to develop" "Release v$PREDICTED_VERSION"
+  create_pull_request release/v$PREDICTED_VERSION develop "release v$PREDICTED_VERSION to develop ↣" "Release v$PREDICTED_VERSION"
+  if [ "$?" != "0" ]; then
+    exit 1
+  fi
 fi
-
