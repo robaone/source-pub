@@ -246,7 +246,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [deploy-check, unit-tests, feature-tests, check_release]
-    environment: production
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main'
@@ -269,7 +268,7 @@ jobs:
       - name: Run semantic release
         run: npx semantic-release@20.0.2
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get New Release
         run: |
           git fetch
