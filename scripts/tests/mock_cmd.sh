@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script prints all arguments to a file
+# This script is used to mock the execution of a command.
 
 if [ "$MOCK_ARGUMENT_FILE" == "" ]; then
   echo "Please set the MOCK_ARGUMENT_FILE environment variable"
@@ -16,7 +16,6 @@ if [ "$MOCK_RESPONSES" == "" ]; then
   echo "Please set the MOCK_RESPONSES environment variable"
   exit 1
 fi
-
 
 # read the file
 function read_tracking_file() {
