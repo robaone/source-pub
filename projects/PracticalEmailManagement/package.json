@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:e2e": "echo \"Not yet implemented\"",
     "build": "./build.sh",
     "push": "cd build && npx clasp push -f",
     "deploy": "cd build && npx clasp push -f && npx clasp deploy -i \"$(cat ../deploy_id.txt)\" -d \"$(git log --pretty=format:'%s' -1)\" "
