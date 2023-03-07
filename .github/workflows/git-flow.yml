@@ -176,9 +176,46 @@ jobs:
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           IDENTIFIER: ${{ github.event.number }}
+  semantic_pre_release:
+    name: Semantic Pre Release
+    needs: [deploy-check, unit-tests, feature-tests, initialize]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/develop'
+    outputs:
+      new-tag: ${{ steps.get-new-release.output.new-tag }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Get Current Release
+        run: |
+          git fetch
+          CURRENT_TAG=$(./scripts/git_latest_version_tag.sh)
+          echo ::set-output name=current-tag::$CURRENT_TAG
+          echo Current Tag: $CURRENT_TAG
+        id: get-current-release
+      - name: Run semantic release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get New Release
+        run: |
+          git fetch
+          NEW_TAG=$(scripts/git_latest_version_tag.sh)
+          echo ::set-output name=new-tag::$NEW_TAG
+          echo New Tag: $NEW_TAG
+        id: get-new-release
   deploy_to_develop:
     name: Deploy to Develop
-    needs: [deploy-check, unit-tests, feature-tests, initialize]
+    needs: [semantic_pre_release]
     environment: develop
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
@@ -245,6 +282,8 @@ jobs:
     name: Semantic Release
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write
     needs: [deploy-check, unit-tests, feature-tests, check_release]
     if: |
       github.event_name == 'push' &&
@@ -266,9 +305,9 @@ jobs:
           echo Current Tag: $CURRENT_TAG
         id: get-current-release
       - name: Run semantic release
-        run: npx semantic-release@20.0.2
+        run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get New Release
         run: |
           git fetch
