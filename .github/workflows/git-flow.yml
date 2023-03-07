@@ -67,11 +67,11 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt install figlet
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -80,7 +80,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           npm run test
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
@@ -97,7 +97,7 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -106,7 +106,7 @@ jobs:
       - name: Run Feature Tests
         run: |
           npm run test:e2e
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
   deploy-check:
@@ -162,7 +162,7 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -172,7 +172,7 @@ jobs:
         run: |
           echo "Deploy IDENTIFIER=$IDENTIFIER to a pull request environment"
           npm run deploy:pr
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           IDENTIFIER: ${{ github.event.number }}
@@ -233,7 +233,7 @@ jobs:
         run: |
           npm i
           sudo apt-get install awscli
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -243,7 +243,7 @@ jobs:
         run: |
           echo "Deploy to the develop environment" 
           npm run deploy:develop
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
   deploy_to_staging:
@@ -265,7 +265,7 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -275,7 +275,7 @@ jobs:
         run: |
           echo "Deploy to the staging environment"
           npm run deploy:staging
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
   semantic_release:
@@ -338,7 +338,7 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -348,7 +348,7 @@ jobs:
         run: |
           echo "Deploy to the production environment"
           npm run deploy:production
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
 
