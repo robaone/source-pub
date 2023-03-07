@@ -69,7 +69,8 @@ my-change
 v0.9.0
 something-else-v2.0.0
 v0.10.0
-v0.0.2500"
+v0.0.2500
+v1.2.0-develop.1"
 EXPECTED_RESULT=1.0.0
 
 ## WHEN
