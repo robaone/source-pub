@@ -38,7 +38,7 @@ function compare_versions {
 }
 
 function cleanup_version() {
-  echo "$1" | grep -o "^v[0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*" | sed 's/^.//'
+  echo "$1" | grep -o "^v[0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*$" | sed 's/^.//'
 }
 # Loop overs line in variable
 while IFS= read -r VERSION; do
