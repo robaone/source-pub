@@ -14,13 +14,7 @@ if [ "$INPUT" == "" ]; then
 fi
 
 # for each line get the first folder name
-FOLDERS="$(echo "$INPUT" | grep '[/]' | sed 's/\// /g' | awk '{print $1}' | sort | uniq)"
-
-# replace docs with ADRPublisher and remove duplicates and publish adr documents
-FOLDERS="$(echo "$FOLDERS" | sed 's/docs/ADRPublisher/g' | sort | uniq)"
-
-# remove items from the list that are in the ignore list
-IGNORE_LIST=".github scripts docs node_modules"
+FOLDERS="$(echo "$INPUT" | grep 'projects[/]' | sed 's/\// /g' | awk '{print $1 "/" $2}' | sort | uniq)"
 
 # get list of folders that don't exist
 # for each folder in FOLDERS
@@ -28,10 +22,15 @@ IGNORE_LIST=".github scripts docs node_modules"
 #    add to list
 function folder_exists() {
   local FOLDER=$1
-  if [ -d "$FOLDER" ]; then
-    echo 1
+  if [ "$FOLDER_EXISTS_CMD" != "" ]; then
+    $FOLDER_EXISTS_CMD "$FOLDER"
+    return $?
   else
-    echo 0
+    if [ -d "$FOLDER" ]; then
+      echo 1
+    else
+      echo 0
+    fi
   fi
 }
 
@@ -67,5 +66,5 @@ do
 done
 
 # replace space with return character
-FOLDERS=$(echo $NEW_FOLDERS | sed 's/ /\n/g')
+FOLDERS=$(echo $NEW_FOLDERS | sed 's/ /\n/g' | sed 's/^projects\///g')
 echo "$FOLDERS"
