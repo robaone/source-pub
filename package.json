@@ -3,10 +3,10 @@
   "version": "0.4.0",
   "description": "Ansel Robateau's source code ",
   "dependencies": {
-    "git-cz": "^4.9.0",
     "markdown-toc": "^1.2.0"
   },
   "devDependencies": {
+    "git-cz": "^4.9.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^8.0.7",
     "semantic-release": "^20.1.1"
