@@ -215,7 +215,7 @@ jobs:
         id: get-new-release
   deploy_to_develop:
     name: Deploy to Develop
-    needs: [semantic_pre_release]
+    needs: [semantic_pre_release,initialize]
     environment: develop
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
