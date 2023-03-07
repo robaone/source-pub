@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script to create a release branch if it does not exist by using
+# This script to create a hotfix branch if it does not exist by using
 # the next predicted version.
 # It will push the branch to the remote repository and
 # create a pull request that targets the main branch and a pull request
@@ -21,13 +21,13 @@ if [ "$GH_PATH" == "" ]; then
 fi
 
 # create a new branch if it does not exist or switch to it if it does
-$GIT_PATH checkout release/v$PREDICTED_VERSION || $GIT_PATH checkout -b release/v$PREDICTED_VERSION
+$GIT_PATH checkout hotfix/v$PREDICTED_VERSION || $GIT_PATH checkout -b hotfix/v$PREDICTED_VERSION
 if [ "$?" != "0" ]; then
   exit 1
 fi
 
 # push the branch to the remote repository
-$GIT_PATH push -u origin release/v$PREDICTED_VERSION
+$GIT_PATH push -u origin hotfix/v$PREDICTED_VERSION
 if [ "$?" != "0" ]; then
   exit 1
 fi
@@ -57,17 +57,18 @@ function create_pull_request() {
   $GH_PATH pr create --base $target_branch --head $branch --title "$title" --body "$body"
 }
 
-if [ "$(pull_request_exists release/v$PREDICTED_VERSION main)" == "false" ]; then
-  create_pull_request release/v$PREDICTED_VERSION main "release v$PREDICTED_VERSION to main" "Release v$PREDICTED_VERSION"
+if [ "$(pull_request_exists hotfix/v$PREDICTED_VERSION main)" == "false" ]; then
+  create_pull_request hotfix/v$PREDICTED_VERSION main "hotfix v$PREDICTED_VERSION to main" "Hotfix v$PREDICTED_VERSION"
   if [ "$?" != "0" ]; then
     exit 1
   fi
 fi
 
 # create a pull request that targets the develop branch if it does not exist
-if [ "$(pull_request_exists release/v$PREDICTED_VERSION develop)" == "false" ]; then
-  create_pull_request release/v$PREDICTED_VERSION develop "release v$PREDICTED_VERSION to develop ↣" "Release v$PREDICTED_VERSION"
+if [ "$(pull_request_exists hotfix/v$PREDICTED_VERSION develop)" == "false" ]; then
+  create_pull_request hotfix/v$PREDICTED_VERSION develop "hotfix v$PREDICTED_VERSION to develop ↣" "Hotfix v$PREDICTED_VERSION"
   if [ "$?" != "0" ]; then
     exit 1
   fi
 fi
+
