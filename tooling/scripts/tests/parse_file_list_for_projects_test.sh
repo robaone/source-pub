@@ -50,9 +50,39 @@ README.md"
 EXPECTED_RESULT="GithubWebhook
 Other"
 export MOCK_ARGUMENT_FILE="$(mktemp)"
-export MOCK_RESPONSES='[{"stdout":"1"},{"stdout":"1"}]'
+export MOCK_RESPONSES='[{},{"stdout":"1"},{"stdout":"1"}]'
 export MOCK_TRACKING_FILE="$(mktemp)"
 export FOLDER_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
+export BUILD_DEPENDS_PATH=$SCRIPT_DIR/mock_cmd.sh
+
+# WHEN
+
+ACTUAL_RESULT="$(echo "$INPUT" | eval $CMD)"
+
+# THEN
+
+assert_equals "0" "$?"
+assert_equals "$EXPECTED_RESULT" "$ACTUAL_RESULT"
+
+
+echo Scenario: Project files with dependencies
+
+# GIVEN
+
+INPUT=".github/workflows/git-flow.yml
+projects/GithubWebhook/README.md
+projects/GithubWebhook/src/index.ts
+projects/Other/README.md
+docs/adr/0001-architecture-decision-record.md
+README.md"
+EXPECTED_RESULT="GithubWebhook
+Other
+project-with-dependency"
+export MOCK_ARGUMENT_FILE="$(mktemp)"
+export MOCK_RESPONSES='[{"stdout":"project-with-dependency"},{"stdout":"1"},{"stdout":"1"}]'
+export MOCK_TRACKING_FILE="$(mktemp)"
+export FOLDER_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
+export BUILD_DEPENDS_PATH=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 

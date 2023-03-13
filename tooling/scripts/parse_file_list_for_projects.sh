@@ -13,8 +13,20 @@ if [ "$INPUT" == "" ]; then
   exit 1
 fi
 
+SCRIPT_DIR=$(cd $(dirname $0); pwd)
+
+if [ "$BUILD_DEPENDS_PATH" == "" ]; then
+  BUILD_DEPENDS_PATH="$($SCRIPT_DIR/build_depends_project_list.sh)"
+fi
+
 # for each line get the first folder name
 FOLDERS="$(echo "$INPUT" | grep 'projects[/]' | sed 's/\// /g' | awk '{print $1 "/" $2}' | sort | uniq)"
+
+# get list of folders triggered by dependencies
+DEPENDS_FOLDERS="$(echo "$INPUT" | $BUILD_DEPENDS_PATH | awk '{print "projects/" $1}')"
+
+# combine with FOLDERS and remove duplicates
+FOLDERS="$(echo "$FOLDERS $DEPENDS_FOLDERS" | sort | uniq)"
 
 # get list of folders that don't exist
 # for each folder in FOLDERS
