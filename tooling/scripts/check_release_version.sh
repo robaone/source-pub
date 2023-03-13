@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# configuration
+
 if [ "$EVENT" != "pull_request" ]; then
   echo "Not applicable"
   exit 0
@@ -31,6 +33,9 @@ if [ "$FIGLET_PATH" == "" ]; then
     exit 1
   fi
 fi
+
+# get branch info 
+
 CURRENT_BRANCH=$($GIT_PATH rev-parse --abbrev-ref HEAD);
 PARSED_BRANCH_VERSION=$(echo $CURRENT_BRANCH | sed -E 's/(release|hotfix)\/v//')
 if [ "$TARGET_BRANCH" == "" ]; then
