@@ -16,7 +16,7 @@ fi
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
 if [ "$BUILD_DEPENDS_PATH" == "" ]; then
-  BUILD_DEPENDS_PATH="$($SCRIPT_DIR/build_depends_project_list.sh)"
+  BUILD_DEPENDS_PATH="$SCRIPT_DIR/build_depends_project_list.sh"
 fi
 
 # for each line get the first folder name
