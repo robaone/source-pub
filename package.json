@@ -1,6 +1,6 @@
 {
   "name": "source-pub",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Ansel Robateau's source code ",
   "dependencies": {
     "markdown-toc": "^1.2.0"
@@ -13,15 +13,15 @@
   },
   "scripts": {
     "build": "echo \"Not yet implemented\"",
-    "start:feature": "./scripts/start_feature.sh",
+    "start:feature": "./tooling/scripts/start_feature.sh",
     "deploy:pr": "echo \"Not yet implemented\"",
     "deploy:develop": "echo \"Not yet implemented\"",
     "deploy:staging": "echo \"Not yet implemented\"",
     "deploy:production": "echo \"Not yet implemented\"",
     "install:dependencies": "echo \"Not yet implemented\"",
-    "start:hotfix": "./scripts/start_hotfix.sh",
-    "start:release": "./scripts/start_release.sh",
-    "test": "./scripts/run_tests.sh",
+    "start:hotfix": "./tooling/scripts/start_hotfix.sh",
+    "start:release": "./tooling/scripts/start_release.sh",
+    "test": "./tooling/scripts/run_tests.sh",
     "test:e2e": "echo \"Not yet implemented\""
   },
   "author": "Ansel Robateau",

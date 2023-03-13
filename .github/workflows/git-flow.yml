@@ -39,13 +39,13 @@ jobs:
           echo ${{ steps.files.outputs.all_changed_files }} | sed -E 's/ /\n/g' > modified_files.txt
           echo "## Modified Files"
           cat modified_files.txt
-          cat modified_files.txt | ./scripts/parse_file_list_for_projects.sh > project_list.txt
+          cat modified_files.txt | ./tooling/scripts/parse_file_list_for_projects.sh > project_list.txt
       - name: Set Dynamic Matrix
         id: setmatrix
         run: |
           echo "## Project List"
           cat project_list.txt
-          matrixStringifiedObject="$(cat project_list.txt | ./scripts/generate_matrix.sh)"
+          matrixStringifiedObject="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object"
           echo "$matrixStringifiedObject"
           echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
@@ -67,11 +67,11 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt install figlet
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -80,7 +80,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           npm run test
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
@@ -97,7 +97,7 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -106,7 +106,7 @@ jobs:
       - name: Run Feature Tests
         run: |
           npm run test:e2e
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
   deploy-check:
@@ -134,10 +134,10 @@ jobs:
           sudo apt install figlet
       - name: Test the script
         run: |
-          scripts/tests/check_release_version_test.sh "$(pwd)/scripts/check_release_version.sh" "$(pwd)/scripts/tests"
+          tooling/scripts/tests/check_release_version_test.sh "$(pwd)/tooling/scripts/check_release_version.sh" "$(pwd)/tooling/scripts/tests"
       - name: Confirm Release Version
         run: |
-          scripts/check_release_version.sh
+          tooling/scripts/check_release_version.sh
         env:
           CURRENT_BRANCH: ${{ github.head_ref }}
           TARGET_BRANCH: ${{ github.base_ref }}
@@ -162,7 +162,7 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -172,7 +172,7 @@ jobs:
         run: |
           echo "Deploy IDENTIFIER=$IDENTIFIER to a pull request environment"
           npm run deploy:pr
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           IDENTIFIER: ${{ github.event.number }}
@@ -198,7 +198,7 @@ jobs:
       - name: Get Current Release
         run: |
           git fetch
-          CURRENT_TAG=$(./scripts/git_latest_version_tag.sh)
+          CURRENT_TAG=$(./tooling/scripts/git_latest_version_tag.sh)
           echo ::set-output name=current-tag::$CURRENT_TAG
           echo Current Tag: $CURRENT_TAG
         id: get-current-release
@@ -209,7 +209,7 @@ jobs:
       - name: Get New Release
         run: |
           git fetch
-          NEW_TAG=$(scripts/git_latest_version_tag.sh)
+          NEW_TAG=$(tooling/scripts/git_latest_version_tag.sh)
           echo ::set-output name=new-tag::$NEW_TAG
           echo New Tag: $NEW_TAG
         id: get-new-release
@@ -233,7 +233,7 @@ jobs:
         run: |
           npm i
           sudo apt-get install awscli
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -243,7 +243,7 @@ jobs:
         run: |
           echo "Deploy to the develop environment" 
           npm run deploy:develop
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
   deploy_to_staging:
@@ -265,7 +265,7 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -275,7 +275,7 @@ jobs:
         run: |
           echo "Deploy to the staging environment"
           npm run deploy:staging
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
   semantic_release:
@@ -300,7 +300,7 @@ jobs:
       - name: Get Current Release
         run: |
           git fetch
-          CURRENT_TAG=$(./scripts/git_latest_version_tag.sh)
+          CURRENT_TAG=$(./tooling/scripts/git_latest_version_tag.sh)
           echo ::set-output name=current-tag::$CURRENT_TAG
           echo Current Tag: $CURRENT_TAG
         id: get-current-release
@@ -311,7 +311,7 @@ jobs:
       - name: Get New Release
         run: |
           git fetch
-          NEW_TAG=$(scripts/git_latest_version_tag.sh)
+          NEW_TAG=$(tooling/scripts/git_latest_version_tag.sh)
           echo ::set-output name=new-tag::$NEW_TAG
           echo New Tag: $NEW_TAG
         id: get-new-release
@@ -338,7 +338,7 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
           npm run install:dependencies
@@ -348,7 +348,7 @@ jobs:
         run: |
           echo "Deploy to the production environment"
           npm run deploy:production
-        working-directory: ${{ matrix.project }}
+        working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
 
