@@ -14,9 +14,11 @@ A public mono repo of all my personal projects
 ├── projects/
 │   ├── project1/
 │   |   ├── ${project source code}
+│   |   ├── .depends
 │   |   └── README.md
 │   ├── project2/
 │   |   ├── ${project source code}
+│   |   ├── .depends
 │   |   └── README.md
 ├── tooling/
 │   └── ${category}/
