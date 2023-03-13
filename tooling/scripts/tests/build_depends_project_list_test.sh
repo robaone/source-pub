@@ -23,16 +23,21 @@ echo Scenario: Build the list of projects that depend on the given files
 
 # GIVEN
 
-export MOCK_ARGUMENT_FILE=$(mktemp)
-export MOCK_RESPONSES='[{}]'
-export MOCK_TRACKING_FILE=$(mktemp)
+PROJECT2_DEPENDS_CONTENTS="projects/project1/*"
 
-EXPECTED_RESULTS="project1
-project12"
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_RESPONSES='[{"stdout":"projects/project2/.depends"},{"stdout":"'$PROJECT2_DEPENDS_CONTENTS'"}]'
+export MOCK_TRACKING_FILE=$(mktemp)
+export FIND_PATH="$SCRIPT_DIR/mock_cmd.sh"
+export CAT_PATH="$SCRIPT_DIR/mock_cmd.sh"
+
+FILES="projects/project1/file1.txt
+README.md"
+EXPECTED_RESULTS="project2"
 
 # WHEN
 
-ACTUAL_RESULT="$($CMD)"
+ACTUAL_RESULT="$(echo "$FILES" | $CMD)"
 
 # THEN
 
