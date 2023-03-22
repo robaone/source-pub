@@ -26,7 +26,7 @@ FOLDERS="$(echo "$INPUT" | grep 'projects[/]' | sed 's/\// /g' | awk '{print $1 
 DEPENDS_FOLDERS="$(echo "$INPUT" | $BUILD_DEPENDS_PATH | awk '{print "projects/" $1}')"
 
 # combine with FOLDERS and remove duplicates
-FOLDERS="$(echo "$FOLDERS $DEPENDS_FOLDERS" | sed 's/ /\n/g' | sort | uniq)"
+FOLDERS="$(echo "$FOLDERS $DEPENDS_FOLDERS" | tr ' ' '\n' | sort -u)"
 
 # get list of folders that don't exist
 # for each folder in FOLDERS
