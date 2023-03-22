@@ -20,6 +20,10 @@ if [ "$GH_PATH" == "" ]; then
   GH_PATH=$(which gh)
 fi
 
+if [ "$PULL_REQUEST_BODY" == "" ]; then
+  PULL_REQUEST_BODY="Release v$PREDICTED_VERSION"
+fi
+
 # create a new branch if it does not exist or switch to it if it does
 $GIT_PATH checkout release/v$PREDICTED_VERSION || $GIT_PATH checkout -b release/v$PREDICTED_VERSION
 if [ "$?" != "0" ]; then
@@ -58,7 +62,7 @@ function create_pull_request() {
 }
 
 if [ "$(pull_request_exists release/v$PREDICTED_VERSION main)" == "false" ]; then
-  create_pull_request release/v$PREDICTED_VERSION main "release v$PREDICTED_VERSION to main" "Release v$PREDICTED_VERSION"
+  create_pull_request release/v$PREDICTED_VERSION main "release v$PREDICTED_VERSION to main" "$PULL_REQUEST_BODY"
   if [ "$?" != "0" ]; then
     exit 1
   fi
@@ -66,7 +70,7 @@ fi
 
 # create a pull request that targets the develop branch if it does not exist
 if [ "$(pull_request_exists release/v$PREDICTED_VERSION develop)" == "false" ]; then
-  create_pull_request release/v$PREDICTED_VERSION develop "release v$PREDICTED_VERSION to develop ↣" "Release v$PREDICTED_VERSION"
+  create_pull_request release/v$PREDICTED_VERSION develop "release v$PREDICTED_VERSION to develop ↣" "$PULL_REQUEST_BODY"
   if [ "$?" != "0" ]; then
     exit 1
   fi
