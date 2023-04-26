@@ -16,7 +16,7 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - name: Get Pull Request Info
-        uses: 8BitJonny/gh-get-current-pr@2.0.0
+        uses: 8BitJonny/gh-get-current-pr@2.2.0
         id: PR
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
