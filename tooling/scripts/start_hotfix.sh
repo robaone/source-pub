@@ -20,6 +20,10 @@ if [ "$GH_PATH" == "" ]; then
   GH_PATH=$(which gh)
 fi
 
+if [ "$PULL_REQUEST_BODY" == "" ]; then
+  PULL_REQUEST_BODY="Hotfix v$PREDICTED_VERSION"
+fi
+
 # create a new branch if it does not exist or switch to it if it does
 $GIT_PATH checkout hotfix/v$PREDICTED_VERSION || $GIT_PATH checkout -b hotfix/v$PREDICTED_VERSION
 if [ "$?" != "0" ]; then
@@ -58,7 +62,7 @@ function create_pull_request() {
 }
 
 if [ "$(pull_request_exists hotfix/v$PREDICTED_VERSION main)" == "false" ]; then
-  create_pull_request hotfix/v$PREDICTED_VERSION main "hotfix v$PREDICTED_VERSION to main" "Hotfix v$PREDICTED_VERSION"
+  create_pull_request hotfix/v$PREDICTED_VERSION main "hotfix v$PREDICTED_VERSION to main" "$PULL_REQUEST_BODY"
   if [ "$?" != "0" ]; then
     exit 1
   fi
