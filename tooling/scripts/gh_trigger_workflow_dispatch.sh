@@ -70,6 +70,7 @@ function wait_for_workflow_to_complete() {
   # Wait for the workflow run to complete
   while true; do
     status=$($CURL_PATH -s -H "Authorization: Bearer $ACCESS_TOKEN" https://api.github.com/repos/$OWNER/$REPO/actions/runs/$run_id | jq -r '.conclusion')
+    echo "Workflow status: $status" >&2
     if [ "$status" != "null" ]; then
       break
     fi
@@ -92,6 +93,7 @@ function get_workflow_dispatch_run_id() {
 }
 
 WORKFLOW_ID=$(get_workflow_id "$WORKFLOW_NAME")
+echo "Trigging workflow $WORKFLOW_NAME with id $WORKFLOW_ID" >&2
 trigger_workflow_dispatch $WORKFLOW_ID $BRANCH_NAME
 
 # try 5 times
@@ -107,6 +109,8 @@ if [ "$run_id" == "" ]; then
   echo "Failed to find workflow run id"
   exit 1
 fi
+
+echo "Workflow run id: $run_id" >&2
 
 # Wait for all workflow ids to complete
 wait_for_workflow_to_complete $run_id

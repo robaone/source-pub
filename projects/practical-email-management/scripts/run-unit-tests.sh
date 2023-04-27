@@ -6,5 +6,5 @@ export OWNER=robaone
 export REPO=source-pub
 export WORKFLOW_NAME="Practical Email Management"
 
-bash -xv $SCRIPT_DIR/../../../tooling/scripts/gh_trigger_workflow_dispatch.sh
+$SCRIPT_DIR/../../../tooling/scripts/gh_trigger_workflow_dispatch.sh
 exit $?
