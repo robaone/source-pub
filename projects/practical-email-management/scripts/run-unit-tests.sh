@@ -2,7 +2,7 @@
 
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
-export OWNER=roboane
+export OWNER=robaone
 export REPO=source-pub
 export WORKFLOW_NAME="Practical Email Management"
 
