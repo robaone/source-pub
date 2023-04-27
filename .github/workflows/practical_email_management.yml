@@ -2,10 +2,6 @@ name: Practical Email Management
 
 on:
   workflow_dispatch:
-    inputs:
-      uuid:
-        description: 'UUID of the workflow run'
-        required: true
     
 
 jobs:
