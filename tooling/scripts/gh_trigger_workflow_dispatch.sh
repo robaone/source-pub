@@ -109,9 +109,9 @@ wait_for_workflow_to_complete $run_id
 
 # Exit with the appropriate status code
 if [ "$status" == "success" ]; then
-  echo "Workflow runs $run_ids completed successfully ✅"
+  echo "Workflow run $run_id completed successfully ✅"
   exit 0
 else
-  echo "Workflow runs $run_ids failed ❌"
+  echo "Workflow run $run_id failed ❌"
   exit 1
 fi
