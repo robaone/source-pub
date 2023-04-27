@@ -35,6 +35,23 @@ function file_exists() {
   fi
 }
 
+function is_empty_string() {
+  local STRING="$1"
+  # remove all empty spaces and remove all line breaks
+  local STRING=$(echo "$STRING" | sed 's/ //g' | sed 's/\n//g')
+  # check if the string is empty
+  if [ "$STRING" == "" ]; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
+if [ "$(is_empty_string "$PROJECTS")" == "1" ]; then
+  echo "{\"include\":[]}"
+  exit 0
+fi
+
 function get_workflow_os () {
   local project=$1
   local job=$2
