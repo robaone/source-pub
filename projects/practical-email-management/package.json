@@ -1,0 +1,31 @@
+{
+  "name": "practicalemailmanagement",
+  "version": "0.2.0",
+  "description": "Practical Email Management in Gmail",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:e2e": "echo \"Not yet implemented\"",
+    "build": "./build.sh",
+    "push": "cd build && npx clasp push -f",
+    "deploy": "cd build && npx clasp push -f && npx clasp deploy -i \"$(cat ../deploy_id.txt)\" -d \"$(git log --pretty=format:'%s' -1)\" ",
+    "deploy:pr": "./scripts/deploy-pr.sh",
+    "deploy:develop": "echo \"Not yet implemented\"",
+    "deploy:staging": "echo \"Not yet implemented\"",
+    "deploy:production": "echo \"Not yet implemented\""
+  },
+  "author": "Ansel Robateau",
+  "license": "SEE LICENSE IN ../LICENSE",
+  "devDependencies": {
+    "jest": "28.0.1",
+    "git-cz": "4.3.1",
+    "@google/clasp": "2.4.1",
+    "@types/google-apps-script": "1.0.46"
+  },
+  "workflow": {
+    "default": {
+      "os": "ubuntu-latest",
+      "targets": ["account1", "account2"]
+    }
+  }
+}
