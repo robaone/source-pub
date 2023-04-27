@@ -24,7 +24,7 @@
   "workflow": {
     "default": {
         "os": "ubuntu-latest",
-        "targets": "account1"
+        "targets": ["account1"]
     },
     "unit-test": {
       "os": "ubuntu-22.04"
