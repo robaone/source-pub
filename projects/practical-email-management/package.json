@@ -26,6 +26,9 @@
     "default": {
       "os": "ubuntu-latest",
       "targets": ["account1", "account2"]
+    },
+    "unitTest": {
+      "targets": ["default"]
     }
   }
 }
