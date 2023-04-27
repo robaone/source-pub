@@ -93,7 +93,7 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Run Unit Tests
         run: |
-          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}; else echo "${{ github.head_ref }}"; fi)
+          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           npm run test
         working-directory: projects/${{ matrix.project }}
         env:
@@ -123,7 +123,7 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Run Feature Tests
         run: |
-          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}; else echo "${{ github.head_ref }}"; fi)
+          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           npm run test:e2e
         working-directory: projects/${{ matrix.project }}
         env:
@@ -191,7 +191,7 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Deploy Pull Request
         run: |
-          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}; else echo "${{ github.head_ref }}"; fi)
+          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           echo "Deploy IDENTIFIER=$IDENTIFIER to a pull request environment"
           npm run deploy:pr
         working-directory: projects/${{ matrix.project }}
@@ -265,7 +265,7 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Deploy to Develop
         run: |
-          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}; else echo "${{ github.head_ref }}"; fi)
+          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           echo "Deploy to the develop environment" 
           npm run deploy:develop
         working-directory: projects/${{ matrix.project }}
@@ -300,7 +300,7 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Deploy to Staging
         run: |
-          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}; else echo "${{ github.head_ref }}"; fi)
+          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           echo "Deploy to the staging environment"
           npm run deploy:staging
         working-directory: projects/${{ matrix.project }}
@@ -376,7 +376,7 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Deploy to Production
         run: |
-          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}; else echo "${{ github.head_ref }}"; fi)
+          BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           echo "Deploy to the production environment"
           npm run deploy:production
         working-directory: projects/${{ matrix.project }}
