@@ -83,11 +83,11 @@ function get_workflow_dispatch_run_id() {
   local branch_name="$2"
   local utc_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   # Find the run id of the workflow dispatch
-  echo "Finding workflow run id by calling https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/runs?per_page=5" >&2
+  echo "Finding workflow run id by calling https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/runs?head_sha=$HEAD_SHA" >&2
   local result="$($CURL_PATH \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
-    "https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/runs?per_page=5" 2>/dev/null)"
+    "https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/runs?head_sha=$HEAD_SHA" 2>/dev/null)"
   if [ "$?" == "0" ]; then
     echo "Filtering workflow runs by event=workflow_dispatch and head_sha=$HEAD_SHA" >&2
     echo $result >&2

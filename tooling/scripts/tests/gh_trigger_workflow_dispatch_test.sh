@@ -38,7 +38,7 @@ ACTUAL_RESULT=$($CMD)
 
 assert "$(cat $MOCK_ARGUMENT_FILE)" "-H Accept: application/vnd.github.v3+json -H Authorization: Bearer token https://api.github.com/repos/owner/repo/actions/workflows
 -X POST -H Accept: application/vnd.github.v3+json -H Authorization: Bearer token https://api.github.com/repos/owner/repo/actions/workflows/1234/dispatches -d {\"ref\":\"branch\"}
--H Accept: application/vnd.github.v3+json -H Authorization: Bearer token https://api.github.com/repos/owner/repo/actions/workflows/1234/runs?per_page=5
+-H Accept: application/vnd.github.v3+json -H Authorization: Bearer token https://api.github.com/repos/owner/repo/actions/workflows/1234/runs?head_sha=sha
 -s -H Authorization: Bearer token https://api.github.com/repos/owner/repo/actions/runs/1234
 -s -H Authorization: Bearer token https://api.github.com/repos/owner/repo/actions/runs/1234"
 assert "Workflow run 1234 completed successfully ✅" "$ACTUAL_RESULT"
