@@ -46,17 +46,31 @@ jobs:
           echo "## Project List"
           cat project_list.txt
           matrixStringifiedObject="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
-          echo "## Matrix Object"
-          echo "$matrixStringifiedObject"
-          echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
+          export JOB_NAME=unitTest
+          matrixStringifiedObjectUnitTest="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
+          echo "## Matrix Object (Unit Tests)"
+          echo "$matrixStringifiedObjectUnitTest" | jq
+          echo "matrix-unit-test=$matrixStringifiedObjectUnitTest" >> $GITHUB_OUTPUT
+          export JOB_NAME=featureTest
+          matrixStringifiedObjectFeatureTest="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
+          echo "## Matrix Object (Feature Tests)"
+          echo "$matrixStringifiedObjectFeatureTest" | jq
+          echo "matrix-feature-test=$matrixStringifiedObjectFeatureTest" >> $GITHUB_OUTPUT
+          export JOB_NAME=deployment
+          matrixStringifiedObjectDeployment="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
+          echo "## Matrix Object (Deployment)"
+          echo "$matrixStringifiedObjectDeployment" | jq
+          echo "matrix-deployment=$matrixStringifiedObjectDeployment" >> $GITHUB_OUTPUT
     outputs:
-      matrix: ${{ steps.setmatrix.outputs.matrix }}
+      matrix-unit-test: ${{ steps.setmatrix.outputs.matrix-unit-test }}
+      matrix-feature-test: ${{ steps.setmatrix.outputs.matrix-feature-test }}
+      matrix-deployment: ${{ steps.setmatrix.outputs.matrix-deployment }}
       files: ${{ steps.files.outputs.all_changed_files }}
   unit-tests:
     name: Unit Tests
     needs: [initialize]
     strategy:
-      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix-unit-test) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -86,7 +100,7 @@ jobs:
     needs: [initialize]
     environment: sandbox
     strategy:
-      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix-feature-test) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -147,7 +161,7 @@ jobs:
     needs: [deploy-check, unit-tests, feature-tests, initialize]
     environment: sandbox
     strategy:
-      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     if: |
@@ -218,7 +232,7 @@ jobs:
     needs: [semantic_pre_release,initialize]
     environment: develop
     strategy:
-      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     if: |
@@ -251,7 +265,7 @@ jobs:
     needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
     environment: staging
     strategy:
-      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     if: |
@@ -320,7 +334,7 @@ jobs:
     needs: [semantic_release,initialize]
     environment: production
     strategy:
-      matrix: ${{ fromJson(needs.initialize.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     if: |

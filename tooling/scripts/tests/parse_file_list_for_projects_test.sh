@@ -57,7 +57,7 @@ export BUILD_DEPENDS_PATH=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 
-ACTUAL_RESULT="$(echo "$INPUT" | eval $CMD)"
+ACTUAL_RESULT="$(echo "$INPUT" | $CMD)"
 
 # THEN
 
@@ -75,11 +75,12 @@ projects/GithubWebhook/src/index.ts
 projects/Other/README.md
 docs/adr/0001-architecture-decision-record.md
 README.md"
-EXPECTED_RESULT="GithubWebhook
+EXPECTED_RESULT="..
+GithubWebhook
 Other
 project-with-dependency"
 export MOCK_ARGUMENT_FILE="$(mktemp)"
-export MOCK_RESPONSES='[{"stdout":"project-with-dependency"},{"stdout":"1"},{"stdout":"1"}]'
+export MOCK_RESPONSES='[{"stdout":"project-with-dependency\n.."},{"stdout":"1"},{"stdout":"1"}]'
 export MOCK_TRACKING_FILE="$(mktemp)"
 export FOLDER_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
 export BUILD_DEPENDS_PATH=$SCRIPT_DIR/mock_cmd.sh
