@@ -25,9 +25,10 @@ export GITHUB_TOKEN=token
 export BRANCH_NAME=branch
 export SLEEP_TIME=0
 export OWNER=owner
+export HEAD_SHA=sha
 export MOCK_ARGUMENT_FILE="$(mktemp)"
 export MOCK_TRACKING_FILE=$(mktemp)
-export MOCK_RESPONSES='[{"stdout":"{\"workflows\":[{\"name\":\"workflow\",\"id\":1234}]}"},{},{"stdout":"{\"workflow_runs\":[{\"id\":1234,\"created_at\":\"2023-04-27T17:59:29Z\"}]}"},{"stdout":"{}"},{"stdout":"{\"conclusion\":\"success\"}"}]'
+export MOCK_RESPONSES='[{"stdout":"{\"workflows\":[{\"name\":\"workflow\",\"id\":1234}]}"},{},{"stdout":"{\"workflow_runs\":[{\"id\":1234,\"event\":\"workflow_dispatch\",\"created_at\":\"2023-04-27T17:59:29Z\",\"head_sha\":\"'$HEAD_SHA'\"}]}"},{"stdout":"{}"},{"stdout":"{\"conclusion\":\"success\"}"}]'
 
 # WHEN
 

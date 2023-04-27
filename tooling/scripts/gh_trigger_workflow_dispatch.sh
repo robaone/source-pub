@@ -37,6 +37,10 @@ if [ "$SLEEP_TIME" == "" ]; then
   SLEEP_TIME=5
 fi
 
+if [ "$HEAD_SHA" == "" ]; then
+  HEAD_SHA=$(git rev-parse HEAD)
+fi
+
 function get_workflow_id() {
   local name="$1"
   local response="$($CURL_PATH \
@@ -82,7 +86,8 @@ function get_workflow_dispatch_run_id() {
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
     https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/runs?branch=$branch_name 2>/dev/null)"
-  local workflow_info=$(echo "$result" | jq ".workflow_runs | .[] | {\"id\":.id, \"created_at\":.created_at}")
+  echo $result > ~/temp/runs.json
+  local workflow_info=$(echo "$result" | jq ".workflow_runs[] | select(.event == \"workflow_dispatch\") | select(.head_sha == \"$HEAD_SHA\") | {\"id\":.id, \"created_at\":.created_at}")
   local run_id=$(echo $workflow_info | jq ".id" | head -n 1)
   echo $run_id
 }
