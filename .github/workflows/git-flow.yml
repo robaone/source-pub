@@ -46,23 +46,20 @@ jobs:
           echo "## Project List"
           cat project_list.txt
           matrixStringifiedObject="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
-          echo "## Matrix Object (Default)"
-          echo "$matrixStringifiedObject"
-          echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
           export JOB_NAME=unitTest
           matrixStringifiedObjectUnitTest="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object (Unit Tests)"
-          echo "$matrixStringifiedObjectUnitTest"
+          echo "$matrixStringifiedObjectUnitTest" | jq
           echo "matrix-unit-test=$matrixStringifiedObjectUnitTest" >> $GITHUB_OUTPUT
           export JOB_NAME=featureTest
           matrixStringifiedObjectFeatureTest="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object (Feature Tests)"
-          echo "$matrixStringifiedObjectFeatureTest"
+          echo "$matrixStringifiedObjectFeatureTest" | jq
           echo "matrix-feature-test=$matrixStringifiedObjectFeatureTest" >> $GITHUB_OUTPUT
           export JOB_NAME=deployment
           matrixStringifiedObjectDeployment="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object (Deployment)"
-          echo "$matrixStringifiedObjectDeployment"
+          echo "$matrixStringifiedObjectDeployment" | jq
           echo "matrix-deployment=$matrixStringifiedObjectDeployment" >> $GITHUB_OUTPUT
     outputs:
       matrix: ${{ steps.setmatrix.outputs.matrix }}
