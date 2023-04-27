@@ -13,6 +13,7 @@ if [ "$CAT_PATH" == "" ]; then
 fi
 
 function file_exists() {
+  local FILE=$1
   if [ "$FILE_EXISTS_CMD" != "" ]; then
     $FILE_EXISTS_CMD "$FILE"
     return $?

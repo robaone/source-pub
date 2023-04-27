@@ -1,0 +1,6 @@
+.depends
+tooling/scripts/build_depends_project_list.sh
+tooling/scripts/generate_matrix.sh
+tooling/scripts/tests/build_depends_project_list_test.sh
+tooling/scripts/tests/generate_matrix_test.sh
+tooling/scripts/tests/parse_file_list_for_projects_test.sh
