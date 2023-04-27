@@ -26,10 +26,10 @@
         "os": "ubuntu-latest",
         "targets": ["account1"]
     },
-    "unit-test": {
+    "unitTest": {
       "os": "ubuntu-22.04"
     },
-    "feature-test": {
+    "featureTest": {
       "os": "ubuntu-22.04"
     },
     "deployment": {

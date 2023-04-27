@@ -95,7 +95,7 @@ function generate_matrix_object() {
       while [ $index -lt $(echo "$TARGETS" | jq -r '. | length') ]; do
         TARGET=$(echo "$TARGETS" | jq -r ".[$index]")
         parsed_target_values=$(echo "$TARGET" | jq -c . 2>/dev/null)
-        if [ "$?" == "0" ]; then
+        if [ "$?" == "0" ] && [ "$parsed_target_values" != "" ]; then
           TARGET=$(echo "$parsed_target_values" | jq -r '.target')
           OS="\"$(echo "$parsed_target_values" | jq -r '.os')\""
         else

@@ -49,12 +49,12 @@ jobs:
           echo "## Matrix Object (Default)"
           echo "$matrixStringifiedObject"
           echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
-          export JOB_NAME=unit-test
+          export JOB_NAME=unitTest
           matrixStringifiedObjectUnitTest="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object (Unit Tests)"
           echo "$matrixStringifiedObjectUnitTest"
           echo "matrix-unit-test=$matrixStringifiedObjectUnitTest" >> $GITHUB_OUTPUT
-          export JOB_NAME=feature-test
+          export JOB_NAME=featureTest
           matrixStringifiedObjectFeatureTest="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object (Feature Tests)"
           echo "$matrixStringifiedObjectFeatureTest"
