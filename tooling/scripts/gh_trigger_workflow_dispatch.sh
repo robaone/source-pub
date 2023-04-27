@@ -90,6 +90,7 @@ function get_workflow_dispatch_run_id() {
     https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/runs?head_sha=$HEAD_SHA&status=in_progress 2>/dev/null)"
   if [ "$?" == "0" ]; then
     echo "Filtering workflow runs by event=workflow_dispatch and head_sha=$HEAD_SHA" >&2
+    echo $result >&2
     local workflow_info=$(echo "$result" | jq ".workflow_runs[] | select(.event == \"workflow_dispatch\") | {\"id\":.id, \"created_at\":.created_at}")
     echo "Workflow info: $workflow_info" >&2
     local run_id=$(echo $workflow_info | jq ".id" | head -n 1)
