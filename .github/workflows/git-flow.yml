@@ -62,7 +62,6 @@ jobs:
           echo "$matrixStringifiedObjectDeployment" | jq
           echo "matrix-deployment=$matrixStringifiedObjectDeployment" >> $GITHUB_OUTPUT
     outputs:
-      matrix: ${{ steps.setmatrix.outputs.matrix }}
       matrix-unit-test: ${{ steps.setmatrix.outputs.matrix-unit-test }}
       matrix-feature-test: ${{ steps.setmatrix.outputs.matrix-feature-test }}
       matrix-deployment: ${{ steps.setmatrix.outputs.matrix-deployment }}
