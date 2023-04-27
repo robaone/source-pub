@@ -4,7 +4,10 @@ if [ "$CURL_PATH" == "" ]; then
   CURL_PATH=$(which curl)
 fi
 
-OWNER=casechek
+if [ "$OWNER" == "" ]; then
+  echo "OWNER is required"
+  exit 1
+fi
 
 if [ "$GITHUB_TOKEN" != "" ]; then
   ACCESS_TOKEN=$GITHUB_TOKEN
@@ -25,29 +28,90 @@ if [ "$WORKFLOW_NAME" == "" ]; then
   exit 1
 fi
 
+if [ "$BRANCH_NAME" == "" ]; then
+  echo "BRANCH_NAME is required"
+  exit 1
+fi
 
-# Trigger the workflow dispatch
-response=$($CURL_PATH -X POST \
--H "Accept: application/vnd.github.v3+json" \
--H "Authorization: Bearer $ACCESS_TOKEN" \
-https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$WORKFLOW_NAME/dispatches \
--d '{"ref":"'$BRANCH_NAME'"}')
+if [ "$SLEEP_TIME" == "" ]; then
+  SLEEP_TIME=5
+fi
 
-# Get the run ID from the response
-run_id=$(echo $response | jq -r '.id')
+function get_workflow_id() {
+  local name="$1"
+  local response="$($CURL_PATH \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Authorization: Bearer $ACCESS_TOKEN" \
+    https://api.github.com/repos/$OWNER/$REPO/actions/workflows 2>/dev/null)"
+  echo $response | jq ".workflows | .[] | select(.name==\"$WORKFLOW_NAME\") | .id"
+}
 
-# Wait for the workflow run to complete
-while true; do
-  status=$($CURL_PATH -s -H "Authorization: Bearer $ACCESS_TOKEN" https://api.github.com/repos/$OWNER/$REPO/actions/runs/$run_id | jq -r '.conclusion')
-  if [ "$status" != "null" ]; then
+function trigger_workflow_dispatch() {
+  local workflow_id="$1"
+  local branch_name="$2"
+  # Trigger the workflow dispatch
+  $CURL_PATH -X POST \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Authorization: Bearer $ACCESS_TOKEN" \
+    https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/dispatches \
+    -d '{"ref":"'$branch_name'"}' 2>/dev/null
+  if [ "$?" != "0" ]; then
+    echo "Failed to trigger workflow dispatch"
+    exit 1
+  fi
+}
+
+function wait_for_workflow_to_complete() {
+  local run_id="$1"
+  # Wait for the workflow run to complete
+  while true; do
+    status=$($CURL_PATH -s -H "Authorization: Bearer $ACCESS_TOKEN" https://api.github.com/repos/$OWNER/$REPO/actions/runs/$run_id | jq -r '.conclusion')
+    if [ "$status" != "null" ]; then
+      break
+    fi
+    sleep $SLEEP_TIME
+  done
+}
+
+function get_workflow_dispatch_run_id() {
+  local workflow_id="$1"
+  local branch_name="$2"
+  local utc_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+  # Find the run id of the workflow dispatch
+  local result="$($CURL_PATH \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Authorization: Bearer $ACCESS_TOKEN" \
+    https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/runs?branch=$branch_name 2>/dev/null)"
+  local workflow_info=$(echo "$result" | jq ".workflow_runs | .[] | {\"id\":.id, \"created_at\":.created_at}")
+  local run_id=$(echo $workflow_info | jq ".id" | head -n 1)
+  echo $run_id
+}
+
+WORKFLOW_ID=$(get_workflow_id "$WORKFLOW_NAME")
+trigger_workflow_dispatch $WORKFLOW_ID $BRANCH_NAME
+
+# try 5 times
+for i in {1..5}; do
+  if [ "$run_id" != "" ]; then
     break
   fi
-  sleep 5
+  sleep $SLEEP_TIME
+  run_id=$(get_workflow_dispatch_run_id $WORKFLOW_ID $BRANCH_NAME)
 done
+
+if [ "$run_id" == "" ]; then
+  echo "Failed to find workflow run id"
+  exit 1
+fi
+
+# Wait for all workflow ids to complete
+wait_for_workflow_to_complete $run_id
 
 # Exit with the appropriate status code
 if [ "$status" == "success" ]; then
+  echo "Workflow runs $run_ids completed successfully ✅"
   exit 0
 else
+  echo "Workflow runs $run_ids failed ❌"
   exit 1
 fi

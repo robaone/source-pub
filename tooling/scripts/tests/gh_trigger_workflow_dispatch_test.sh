@@ -23,9 +23,10 @@ export REPO=repo
 export WORKFLOW_NAME=workflow
 export GITHUB_TOKEN=token
 export BRANCH_NAME=branch
+export SLEEP_TIME=0
 export MOCK_ARGUMENT_FILE="$(mktemp)"
-export MOCK_RESPONSES='[{"stdout": "{\"id\":1234}"},{"stdout":"{}"},{"stdout":"{\"conclusion\":\"success\"}"}]'
-export MOCK_TRACKING_FILE="$(mktemp)"
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[{"stdout":"{\"workflows\":[{\"name\":\"workflow\",\"id\":1234}]}"},{},{"stdout":"{\"workflow_runs\":[{\"id\":1234,\"created_at\":\"2023-04-27T17:59:29Z\"}]}"},{"stdout":"{}"},{"stdout":"{\"conclusion\":\"success\"}"}]'
 
 # WHEN
 
@@ -33,6 +34,8 @@ ACTUAL_RESULT=$($CMD)
 
 # THEN
 
-assert "$(cat $MOCK_ARGUMENT_FILE)" "-X POST -H Accept: application/vnd.github.v3+json -H Authorization: Bearer token https://api.github.com/repos/casechek/repo/actions/workflows/workflow/dispatches -d {\"ref\":\"branch\"}
--s -H Authorization: Bearer token https://api.github.com/repos/casechek/repo/actions/runs/1234
--s -H Authorization: Bearer token https://api.github.com/repos/casechek/repo/actions/runs/1234"
+assert "$(cat $MOCK_ARGUMENT_FILE)" "-H Accept: application/vnd.github.v3+json -H Authorization: Bearer token https://api.github.com/repos/robaone/repo/actions/workflows
+-X POST -H Accept: application/vnd.github.v3+json -H Authorization: Bearer token https://api.github.com/repos/robaone/repo/actions/workflows/1234/dispatches -d {\"ref\":\"branch\"}
+-H Accept: application/vnd.github.v3+json -H Authorization: Bearer token https://api.github.com/repos/robaone/repo/actions/workflows/1234/runs?branch=branch
+-s -H Authorization: Bearer token https://api.github.com/repos/robaone/repo/actions/runs/1234
+-s -H Authorization: Bearer token https://api.github.com/repos/robaone/repo/actions/runs/1234"
