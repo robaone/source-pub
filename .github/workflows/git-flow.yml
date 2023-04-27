@@ -49,15 +49,18 @@ jobs:
           echo "## Matrix Object (Default)"
           echo "$matrixStringifiedObject"
           echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
-          matrixStringifiedObjectUnitTest="$(cat project_list.txt | JOB_NAME=unit-tests ./tooling/scripts/generate_matrix.sh)"
+          export JOB_NAME=unit-tests
+          matrixStringifiedObjectUnitTest="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object (Unit Tests)"
           echo "$matrixStringifiedObjectUnitTest"
           echo "matrix-unit-test=$matrixStringifiedObjectUnitTest" >> $GITHUB_OUTPUT
-          matrixStringifiedObjectFeatureTest="$(cat project_list.txt | JOB_NAME=feature-tests ./tooling/scripts/generate_matrix.sh)"
+          export JOB_NAME=feature-tests
+          matrixStringifiedObjectFeatureTest="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object (Feature Tests)"
           echo "$matrixStringifiedObjectFeatureTest"
           echo "matrix-feature-test=$matrixStringifiedObjectFeatureTest" >> $GITHUB_OUTPUT
-          matrixStringifiedObjectDeployment="$(cat project_list.txt | JOB_NAME=deployment ./tooling/scripts/generate_matrix.sh)"
+          export JOB_NAME=deployment
+          matrixStringifiedObjectDeployment="$(cat project_list.txt | ./tooling/scripts/generate_matrix.sh)"
           echo "## Matrix Object (Deployment)"
           echo "$matrixStringifiedObjectDeployment"
           echo "matrix-deployment=$matrixStringifiedObjectDeployment" >> $GITHUB_OUTPUT
