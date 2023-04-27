@@ -6,6 +6,25 @@ fi
 
 OWNER=casechek
 
+if [ "$GITHUB_TOKEN" != "" ]; then
+  ACCESS_TOKEN=$GITHUB_TOKEN
+fi
+
+if [ "$OWNER" == "" ]; then
+  echo "OWNER is required"
+  exit 1
+fi
+
+if [ "$REPO" == "" ]; then
+  echo "REPO is required"
+  exit 1
+fi
+
+if [ "$WORKFLOW_NAME" == "" ]; then
+  echo "WORKFLOW_NAME is required"
+  exit 1
+fi
+
 
 # Trigger the workflow dispatch
 response=$($CURL_PATH -X POST \

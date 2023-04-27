@@ -95,6 +95,9 @@ jobs:
         run: |
           npm run test
         working-directory: projects/${{ matrix.project }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
@@ -123,6 +126,8 @@ jobs:
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
   deploy-check:
     name: Deployment Check
     runs-on: ubuntu-latest
@@ -190,6 +195,8 @@ jobs:
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           IDENTIFIER: ${{ github.event.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
   semantic_pre_release:
     name: Semantic Pre Release
     needs: [deploy-check, unit-tests, feature-tests, initialize]
@@ -260,6 +267,8 @@ jobs:
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
   deploy_to_staging:
     name: Deploy to Staging
     needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
@@ -292,6 +301,8 @@ jobs:
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
   semantic_release:
     name: Semantic Release
     runs-on: ubuntu-latest
@@ -365,4 +376,6 @@ jobs:
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
 

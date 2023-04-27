@@ -4,7 +4,7 @@
   "description": "Practical Email Management in Gmail",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "./scripts/run-unit-tests.sh",
     "test:e2e": "echo \"Not yet implemented\"",
     "build": "./build.sh",
     "push": "cd build && npx clasp push -f",
