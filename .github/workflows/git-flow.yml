@@ -93,8 +93,12 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Run Unit Tests
         run: |
+          export BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           npm run test
         working-directory: projects/${{ matrix.project }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.after }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
@@ -119,10 +123,13 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Run Feature Tests
         run: |
+          export BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           npm run test:e2e
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.after }}
   deploy-check:
     name: Deployment Check
     runs-on: ubuntu-latest
@@ -184,12 +191,15 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Deploy Pull Request
         run: |
+          export BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           echo "Deploy IDENTIFIER=$IDENTIFIER to a pull request environment"
           npm run deploy:pr
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           IDENTIFIER: ${{ github.event.number }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.after }}
   semantic_pre_release:
     name: Semantic Pre Release
     needs: [deploy-check, unit-tests, feature-tests, initialize]
@@ -219,7 +229,7 @@ jobs:
       - name: Run semantic release
         run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
       - name: Get New Release
         run: |
           git fetch
@@ -255,11 +265,14 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Deploy to Develop
         run: |
+          export BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           echo "Deploy to the develop environment" 
           npm run deploy:develop
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.after }}
   deploy_to_staging:
     name: Deploy to Staging
     needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
@@ -287,11 +300,14 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Deploy to Staging
         run: |
+          export BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           echo "Deploy to the staging environment"
           npm run deploy:staging
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.after }}
   semantic_release:
     name: Semantic Release
     runs-on: ubuntu-latest
@@ -321,7 +337,7 @@ jobs:
       - name: Run semantic release
         run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
       - name: Get New Release
         run: |
           git fetch
@@ -360,9 +376,12 @@ jobs:
           PROJECT: ${{ matrix.project }}
       - name: Deploy to Production
         run: |
+          export BRANCH_NAME=$(if [ -z "${{ github.head_ref }}" ]; then echo "${{ github.ref_name }}"; else echo "${{ github.head_ref }}"; fi)
           echo "Deploy to the production environment"
           npm run deploy:production
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.after }}
 
