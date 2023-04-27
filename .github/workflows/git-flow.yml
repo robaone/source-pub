@@ -95,6 +95,10 @@ jobs:
         run: |
           npm run test
         working-directory: projects/${{ matrix.project }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.event.after }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
@@ -123,6 +127,9 @@ jobs:
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.event.after }}
   deploy-check:
     name: Deployment Check
     runs-on: ubuntu-latest
@@ -190,6 +197,9 @@ jobs:
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           IDENTIFIER: ${{ github.event.number }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.event.after }}
   semantic_pre_release:
     name: Semantic Pre Release
     needs: [deploy-check, unit-tests, feature-tests, initialize]
@@ -219,7 +229,7 @@ jobs:
       - name: Run semantic release
         run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
       - name: Get New Release
         run: |
           git fetch
@@ -260,6 +270,9 @@ jobs:
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.event.after }}
   deploy_to_staging:
     name: Deploy to Staging
     needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
@@ -292,6 +305,9 @@ jobs:
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.event.after }}
   semantic_release:
     name: Semantic Release
     runs-on: ubuntu-latest
@@ -321,7 +337,7 @@ jobs:
       - name: Run semantic release
         run: npx semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
       - name: Get New Release
         run: |
           git fetch
@@ -365,4 +381,7 @@ jobs:
         working-directory: projects/${{ matrix.project }}
         env:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.event.after }}
 
