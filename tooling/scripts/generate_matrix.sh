@@ -40,7 +40,10 @@ function get_workflow_os () {
   local job=$2
   local project_path="$SCRIPT_DIR/../../projects/$project"
   if [ "$(file_exists "$project_path/package.json")" == "1" ]; then
-    local os=$($JQ_CMD -rc .workflow.${job}.os "$project_path/package.json")
+    local os=$($JQ_CMD -rc '.workflow.'${job}'.os' "$project_path/package.json" 2>/dev/null)
+    if [ "$?" != "0" ] || [ "$os" == "" ]; then
+      os="null"
+    fi
     if [ "$job" != "default" ] && [ "$os" == "null" ]; then
       os=$($JQ_CMD -rc .workflow.default.os "$project_path/package.json")
     fi
@@ -64,11 +67,14 @@ function get_targets () {
   local job=$2
   local project_path="$SCRIPT_DIR/../../projects/$project"
   if [ "$(file_exists "$project_path/package.json")" == "1" ]; then
-    local targets=$($JQ_CMD -rc .workflow.${job}.targets "$project_path/package.json")
-    if [ "$job" != "default" ] && [ "$targets" == "null" ]; then
-      targets=$($JQ_CMD -rc .workflow.default.targets "$project_path/package.json")
+    local targets=$($JQ_CMD -rc .workflow.${job}.targets "$project_path/package.json" 2>/dev/null)
+    if [ "$targets" == "" ]; then
+      targets="null"
     fi
-    if [ "$targets" != "null" ]; then
+    if [ "$job" != "default" ] && [ "$targets" == "null" ]; then
+      targets=$($JQ_CMD -rc .workflow.default.targets "$project_path/package.json" 2>/dev/null)
+    fi
+    if [ "$targets" != "null" ] && [ "$targets" != "" ]; then
       echo "$targets"
     else
       echo "[]"
