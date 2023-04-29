@@ -99,6 +99,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+      - name: Workflow Dispatch
+        uses: robaone/workflow-dispatch@v2.2.0
+        with:
+          workflow: ${{ matrix.workflow.unitTest }}
+          token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          bypass: true
   feature-tests:
     name: Feature Tests
     needs: [initialize]
