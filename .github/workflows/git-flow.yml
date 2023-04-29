@@ -102,9 +102,9 @@ jobs:
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.0
         with:
-          workflow: ${{ matrix.workflow.unitTest }}
+          workflow: ${{ matrix.unitTest.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: true
+          bypass: ${{ matrix.unitTest.bypass }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
