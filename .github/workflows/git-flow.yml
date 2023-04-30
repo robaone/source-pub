@@ -105,7 +105,7 @@ jobs:
           workflow: ${{ matrix.unitTest.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           bypass: ${{ matrix.unitTest.bypass }}
-          input: ${{ needs.initialize.outputs.unitTestInput }}
+          inputs: ${{ needs.initialize.outputs.unitTestInput }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
@@ -143,7 +143,7 @@ jobs:
           workflow: ${{ matrix.featureTest.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           bypass: ${{ matrix.featureTest.bypass }}
-          input: ${{ needs.initialize.outputs.featureTestInput }}
+          inputs: ${{ needs.initialize.outputs.featureTestInput }}
   deploy-check:
     name: Deployment Check
     runs-on: ubuntu-latest
@@ -220,7 +220,7 @@ jobs:
           workflow: ${{ matrix.deploy.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           bypass: ${{ matrix.deploy.bypass }}
-          input: ${{ needs.initialize.outputs.deployPRInput }}
+          inputs: ${{ needs.initialize.outputs.deployPRInput }}
   semantic_pre_release:
     name: Semantic Pre Release
     needs: [deploy-check, unit-tests, feature-tests, initialize]
@@ -300,7 +300,7 @@ jobs:
           workflow: ${{ matrix.deploy.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           bypass: ${{ matrix.deploy.bypass }}
-          input: ${{ needs.initialize.outputs.deployDevelopInput }}
+          inputs: ${{ needs.initialize.outputs.deployDevelopInput }}
   deploy_to_staging:
     name: Deploy to Staging
     needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
@@ -342,7 +342,7 @@ jobs:
           workflow: ${{ matrix.deploy.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           bypass: ${{ matrix.deploy.bypass }}
-          input: ${{ needs.initialize.outputs.deployStagingInput }}
+          inputs: ${{ needs.initialize.outputs.deployStagingInput }}
   semantic_release:
     name: Semantic Release
     runs-on: ubuntu-latest
@@ -425,5 +425,5 @@ jobs:
           workflow: ${{ matrix.deploy.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           bypass: ${{ matrix.deploy.bypass }}
-          input: ${{ needs.initialize.outputs.deployProductionInput }}
+          inputs: ${{ needs.initialize.outputs.deployProductionInput }}
 
