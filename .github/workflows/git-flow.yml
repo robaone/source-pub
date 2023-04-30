@@ -100,7 +100,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
       - name: Workflow Dispatch
-        uses: robaone/workflow-dispatch@v2.2.0
+        uses: robaone/workflow-dispatch@v2.2.1
         with:
           workflow: ${{ matrix.unitTest.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
