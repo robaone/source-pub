@@ -92,6 +92,30 @@ function get_targets () {
   fi
 }
 
+function get_workflow() {
+  local project_json="$1"
+  local job=$2
+  local target=$3
+  local workflow=$(echo "$project_json" | jq -rc ".workflow.${job}.targets[] | select(.target == \"${target}\") | .workflow" 2>/dev/null)
+  if [ "$workflow" == "" ] || [ "$workflow" == "null" ]; then
+    workflow=$(echo "$project_json" | jq -rc .workflow.${job}.workflow 2>/dev/null)
+    if [ "$workflow" == "" ]; then
+      workflow="null"
+    fi
+    if [ "$job" != "default" ] && [ "$workflow" == "null" ]; then
+      workflow=$(echo "$project_json" | jq -rc ".workflow.default.targets[] | select(.target == \"${target}\") | .workflow" 2>/dev/null)
+      if [ "$workflow" == "" ] || [ "$workflow" == "null" ]; then
+        workflow=$(echo "$project_json" | jq -rc .workflow.default.workflow 2>/dev/null)
+      fi
+    fi
+  fi
+  if [ "$workflow" != "null" ] && [ "$workflow" != "" ]; then
+    echo "$workflow"
+  else
+    echo "null"
+  fi
+}
+
 function generate_matrix_object() {
   local projects="$1"
   local matrix_object="{\"include\":["
@@ -106,7 +130,6 @@ function generate_matrix_object() {
     if [ "$TARGETS" != "[]" ]; then
       local index=0
       while [ $index -lt $(echo "$TARGETS" | jq -r '. | length') ]; do
-        local CUSTOM_WORKFLOW="null"
         TARGET=$(echo "$TARGETS" | jq -r ".[$index]")
         parsed_target_values=$(echo "$TARGET" | jq -c . 2>/dev/null)
         if [ "$?" == "0" ] && [ "$parsed_target_values" != "" ]; then
@@ -115,10 +138,10 @@ function generate_matrix_object() {
           if [ "$OS" == "\"null\"" ] || [ "$OS" == "\"\"" ]; then
             OS="$WORKFLOW_OS"
           fi
-          CUSTOM_WORKFLOW=$(echo "$parsed_target_values" | jq -r '.workflow')
         else
           OS="$WORKFLOW_OS"
         fi
+        CUSTOM_WORKFLOW=$(get_workflow "$project_json" "$JOB_NAME" "$TARGET")
         if [ "$CUSTOM_WORKFLOW" != "null" ] && [ "$CUSTOM_WORKFLOW" != "" ]; then
           matrix_object="${matrix_object}{\"project\":\"${project}\",\"os\":$OS,\"target\":\"$TARGET\",\"workflow\":\"$CUSTOM_WORKFLOW\"},"
         else

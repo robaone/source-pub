@@ -138,7 +138,30 @@ export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 
-ACTUAL_RESULT=$(echo "$PROJECTS" | bash -x $CMD)
+ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
+
+# THEN
+
+assert_equals '{"include":[{"project":"project","os":"ubuntu-latest","target":"ios","workflow":"custom-workflow"}]}' "$ACTUAL_RESULT"
+
+echo Scenario: Generate a matrix object string with a base custom workflow dispatch
+
+# GIVEN
+
+PACKAGE_JSON='{ "workflow": { "default": { "targets": [ { "target":"ios" }], "workflow": "custom-workflow"}}}'
+unset DEFAULT_OS
+export PROJECTS="project"
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[
+{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}
+]'
+export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
+export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
+
+# WHEN
+
+ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
 
 # THEN
 
