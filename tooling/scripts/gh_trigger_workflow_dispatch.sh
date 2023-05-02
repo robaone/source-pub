@@ -34,7 +34,7 @@ if [ "$BRANCH_NAME" == "" ]; then
 fi
 
 if [ "$SLEEP_TIME" == "" ]; then
-  SLEEP_TIME=5
+  SLEEP_TIME=10
 fi
 
 if [ "$HEAD_SHA" == "" ]; then
