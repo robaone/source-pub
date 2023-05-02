@@ -100,13 +100,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
           TARGET: ${{ matrix.target }}
-      - name: Workflow Dispatch
-        uses: robaone/workflow-dispatch@v2.2.2
-        with:
-          workflow: ${{ matrix.workflow }}
-          token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.bypass }}
-          inputs: ${{ needs.initialize.outputs.unitTestInput }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
@@ -139,13 +132,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
           TARGET: ${{ matrix.target }}
-      - name: Workflow Dispatch
-        uses: robaone/workflow-dispatch@v2.2.2
-        with:
-          workflow: ${{ matrix.workflow }}
-          token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.bypass }}
-          inputs: ${{ needs.initialize.outputs.featureTestInput }}
   deploy-check:
     name: Deployment Check
     runs-on: ubuntu-latest
@@ -217,13 +203,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
           TARGET: ${{ matrix.target }}
-      - name: Workflow Dispatch
-        uses: robaone/workflow-dispatch@v2.2.2
-        with:
-          workflow: ${{ matrix.workflow }}
-          token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.bypass }}
-          inputs: ${{ needs.initialize.outputs.deployPRInput }}
   semantic_pre_release:
     name: Semantic Pre Release
     needs: [deploy-check, unit-tests, feature-tests, initialize]
@@ -298,13 +277,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
           TARGET: ${{ matrix.target }}
-      - name: Workflow Dispatch
-        uses: robaone/workflow-dispatch@v2.2.2
-        with:
-          workflow: ${{ matrix.workflow }}
-          token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.bypass }}
-          inputs: ${{ needs.initialize.outputs.deployDevelopInput }}
   deploy_to_staging:
     name: Deploy to Staging
     needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
@@ -341,13 +313,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
           TARGET: ${{ matrix.target }}
-      - name: Workflow Dispatch
-        uses: robaone/workflow-dispatch@v2.2.2
-        with:
-          workflow: ${{ matrix.workflow }}
-          token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.bypass }}
-          inputs: ${{ needs.initialize.outputs.deployStagingInput }}
   semantic_release:
     name: Semantic Release
     runs-on: ubuntu-latest
@@ -425,11 +390,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
           TARGET: ${{ matrix.target }}
-      - name: Workflow Dispatch
-        uses: robaone/workflow-dispatch@v2.2.2
-        with:
-          workflow: ${{ matrix.workflow }}
-          token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.bypass }}
-          inputs: ${{ needs.initialize.outputs.deployProductionInput }}
-
