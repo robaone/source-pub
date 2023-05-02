@@ -41,6 +41,12 @@ if [ "$HEAD_SHA" == "" ]; then
   HEAD_SHA=$(git rev-parse HEAD)
 fi
 
+if [ "$INPUTS" == "" ]; then
+  INPUTS_SUFFIX=""
+else
+  INPUTS_SUFFIX=",\"inputs\":$INPUTS"
+fi
+
 function get_workflow_id() {
   local name="$1"
   local response="$($CURL_PATH \
@@ -58,7 +64,7 @@ function trigger_workflow_dispatch() {
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
     https://api.github.com/repos/$OWNER/$REPO/actions/workflows/$workflow_id/dispatches \
-    -d '{"ref":"'$branch_name'"}' 2>/dev/null
+    -d '{"ref":"'$branch_name'"'$INPUTS_SUFFIX'}' 2>/dev/null
   if [ "$?" != "0" ]; then
     echo "Failed to trigger workflow dispatch"
     exit 1
