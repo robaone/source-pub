@@ -28,7 +28,8 @@
       "targets": ["account1", "account2"]
     },
     "unitTest": {
-      "targets": ["default"]
+      "targets": ["default"],
+      "workflow": "Practical Email Management"
     }
   }
 }

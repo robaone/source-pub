@@ -2,7 +2,11 @@ name: Practical Email Management
 
 on:
   workflow_dispatch:
-    
+    inputs:
+      target:
+        description: 'Target'
+        required: true
+
 
 jobs:
   initialize:
