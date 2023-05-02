@@ -99,6 +99,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.2
         with:
@@ -137,6 +138,7 @@ jobs:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.2
         with:
@@ -214,6 +216,7 @@ jobs:
           IDENTIFIER: ${{ github.event.number }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.2
         with:
@@ -294,6 +297,7 @@ jobs:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.2
         with:
@@ -336,6 +340,7 @@ jobs:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.2
         with:
@@ -419,6 +424,7 @@ jobs:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.2
         with:
