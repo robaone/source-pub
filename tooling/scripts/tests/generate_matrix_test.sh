@@ -13,37 +13,82 @@ function assert_equals {
   fi
 }
 
+echo Scenario: Generate a matrix object string where project.json does not exist
+
+# GIVEN
+
+export DEFAULT_OS="pop-os-20.04"
+export PROJECTS="my-pop-project"
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[{"stdout":"0"}]'
+export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
+export CAT_CMD=$SCRIPT_DIR/mock_cmd.sh
+
+# WHEN
+
+ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
+
+# THEN
+
+assert_equals '{"include":[]}' "$ACTUAL_RESULT"
+
+echo Scenario: Generate a matrix object where where project.json exists but does not contain a workflow object
+
+# GIVEN
+
+PACKAGE_JSON='{}'
+export DEFAULT_OS="pop-os-20.04"
+export PROJECTS="my-pop-project"
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}]'
+export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
+export CAT_CMD=$SCRIPT_DIR/mock_cmd.sh
+
+# WHEN
+
+ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
+
+# THEN
+
+assert_equals '{"include":[{"project":"my-pop-project","os":"pop-os-20.04"}]}' "$ACTUAL_RESULT"
+
 echo Scenario: Generate a matrix object string from the default OS
 
 # GIVEN
 
+PACKAGE_JSON='{ "workflow": { "default": { "os": "ubuntu-14.04" } } }'
+PACKAGE2_JSON='{}'
 unset DEFAULT_OS
 export PROJECTS="GithubWebhook
 OtherProject"
 export MOCK_ARGUMENT_FILE=$(mktemp)
 export MOCK_TRACKING_FILE=$(mktemp)
-export MOCK_RESPONSES='[]'
+export MOCK_RESPONSES='[
+{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"},
+{"stdout":"1"},{"stdout":"'$( echo $PACKAGE2_JSON | sed 's/"/\\"/g' )'"}
+]'
 export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
-export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
+export CAT_CMD=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 
 ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
 
 # THEN
-assert_equals '{"include":[{"project":"GithubWebhook","os":"ubuntu-latest"},{"project":"OtherProject","os":"ubuntu-latest"}]}' "$ACTUAL_RESULT"
+assert_equals '{"include":[{"project":"GithubWebhook","os":"ubuntu-14.04"},{"project":"OtherProject","os":"ubuntu-latest"}]}' "$ACTUAL_RESULT"
 
-
-echo Scenario: Generate a matrix object string from a default OS
+echo Scenario: Generate a matrix object string from a target OS
 
 # GIVEN
 
+PACKAGE_JSON='{ "workflow": { "default": { "targets": [ { "target":"target1", "os":"ubuntu-14.04" } ] } } }'
 export DEFAULT_OS="ubuntu-22.04"
-export PROJECTS="GithubWebhook
-OtherProject"
+export PROJECTS="project"
 export MOCK_ARGUMENT_FILE=$(mktemp)
 export MOCK_TRACKING_FILE=$(mktemp)
-export MOCK_RESPONSES='[]'
+export MOCK_RESPONSES='[{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}]'
 export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
 export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
 
@@ -52,21 +97,20 @@ export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
 ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
 
 # THEN
-assert_equals '{"include":[{"project":"GithubWebhook","os":"ubuntu-22.04"},{"project":"OtherProject","os":"ubuntu-22.04"}]}' "$ACTUAL_RESULT"
+assert_equals '{"include":[{"project":"project","os":"ubuntu-14.04","target":"target1"}]}' "$ACTUAL_RESULT"
 
 echo Scenario: Generate a matrix object string from 2 targets with 2 OSes
 
 # GIVEN
 
+PACKAGE_JSON='{ "workflow": { "default": { "targets": [ { "target":"ios", "os":"macos-latest" }, { "target":"web", "os":"ubuntu-22.04" } ] } } }'
 export DEFAULT_OS="ubuntu-22.04"
-export PROJECTS="GithubWebhook
-OtherProject"
+export PROJECTS="project"
 export MOCK_ARGUMENT_FILE=$(mktemp)
 export MOCK_TRACKING_FILE=$(mktemp)
-export MOCK_RESPONSES='[{"stdout":"1"},{"stdout":"ubuntu-22.04"},{"exit":1},{"stdout":"1"},
-{"stdout":"[]"},
-{"stdout":"1"},{"stdout":"ubuntu-22.04"},{"exit":1},{"stdout":"1"},
-{"stdout":"[{\"os\":\"macos-latest\",\"target\":\"ios\"},\"web\"]"}]'
+export MOCK_RESPONSES='[
+{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}
+]'
 export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
 export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
 
@@ -75,4 +119,50 @@ export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
 ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
 
 # THEN
-assert_equals '{"include":[{"project":"GithubWebhook","os":"ubuntu-22.04"},{"project":"OtherProject","os":"macos-latest","target":"ios"},{"project":"OtherProject","os":"ubuntu-22.04","target":"web"}]}' "$ACTUAL_RESULT"
+assert_equals '{"include":[{"project":"project","os":"macos-latest","target":"ios"},{"project":"project","os":"ubuntu-22.04","target":"web"}]}' "$ACTUAL_RESULT"
+
+echo Scenario: Generate a matrix object string with a custom workflow dispatch
+
+# GIVEN
+
+PACKAGE_JSON='{ "workflow": { "default": { "targets": [ { "target":"ios", "workflow": "custom-workflow" }]}}}'
+unset DEFAULT_OS
+export PROJECTS="project"
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[
+{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}
+]'
+export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
+export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
+
+# WHEN
+
+ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
+
+# THEN
+
+assert_equals '{"include":[{"project":"project","os":"ubuntu-latest","target":"ios","workflow":"custom-workflow","bypass":"false"}]}' "$ACTUAL_RESULT"
+
+echo Scenario: Generate a matrix object string with a base custom workflow dispatch
+
+# GIVEN
+
+PACKAGE_JSON='{ "workflow": { "default": { "targets": [ { "target":"ios" }], "workflow": "custom-workflow"}}}'
+unset DEFAULT_OS
+export PROJECTS="project"
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[
+{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}
+]'
+export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
+export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
+
+# WHEN
+
+ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
+
+# THEN
+
+assert_equals '{"include":[{"project":"project","os":"ubuntu-latest","target":"ios","workflow":"custom-workflow","bypass":"false"}]}' "$ACTUAL_RESULT"

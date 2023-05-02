@@ -99,6 +99,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
   feature-tests:
     name: Feature Tests
     needs: [initialize]
@@ -130,6 +131,7 @@ jobs:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
   deploy-check:
     name: Deployment Check
     runs-on: ubuntu-latest
@@ -200,6 +202,7 @@ jobs:
           IDENTIFIER: ${{ github.event.number }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
   semantic_pre_release:
     name: Semantic Pre Release
     needs: [deploy-check, unit-tests, feature-tests, initialize]
@@ -273,6 +276,7 @@ jobs:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
   deploy_to_staging:
     name: Deploy to Staging
     needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
@@ -308,6 +312,7 @@ jobs:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
+          TARGET: ${{ matrix.target }}
   semantic_release:
     name: Semantic Release
     runs-on: ubuntu-latest
@@ -384,4 +389,4 @@ jobs:
           MODIFIED_FILES: ${{ needs.initialize.outputs.files }}
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
           HEAD_SHA: ${{ github.event.after }}
-
+          TARGET: ${{ matrix.target }}
