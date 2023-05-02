@@ -102,9 +102,9 @@ jobs:
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.1
         with:
-          workflow: ${{ matrix.unitTest.workflow }}
+          workflow: ${{ matrix.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.unitTest.bypass }}
+          bypass: ${{ matrix.bypass }}
           inputs: ${{ needs.initialize.outputs.unitTestInput }}
   feature-tests:
     name: Feature Tests
@@ -140,9 +140,9 @@ jobs:
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.1
         with:
-          workflow: ${{ matrix.featureTest.workflow }}
+          workflow: ${{ matrix.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.featureTest.bypass }}
+          bypass: ${{ matrix.bypass }}
           inputs: ${{ needs.initialize.outputs.featureTestInput }}
   deploy-check:
     name: Deployment Check
@@ -217,9 +217,9 @@ jobs:
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.1
         with:
-          workflow: ${{ matrix.deploy.workflow }}
+          workflow: ${{ matrix.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.deploy.bypass }}
+          bypass: ${{ matrix.bypass }}
           inputs: ${{ needs.initialize.outputs.deployPRInput }}
   semantic_pre_release:
     name: Semantic Pre Release
@@ -297,9 +297,9 @@ jobs:
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.1
         with:
-          workflow: ${{ matrix.deploy.workflow }}
+          workflow: ${{ matrix.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.deploy.bypass }}
+          bypass: ${{ matrix.bypass }}
           inputs: ${{ needs.initialize.outputs.deployDevelopInput }}
   deploy_to_staging:
     name: Deploy to Staging
@@ -339,9 +339,9 @@ jobs:
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.1
         with:
-          workflow: ${{ matrix.deploy.workflow }}
+          workflow: ${{ matrix.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.deploy.bypass }}
+          bypass: ${{ matrix.bypass }}
           inputs: ${{ needs.initialize.outputs.deployStagingInput }}
   semantic_release:
     name: Semantic Release
@@ -422,8 +422,8 @@ jobs:
       - name: Workflow Dispatch
         uses: robaone/workflow-dispatch@v2.2.1
         with:
-          workflow: ${{ matrix.deploy.workflow }}
+          workflow: ${{ matrix.workflow }}
           token: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
-          bypass: ${{ matrix.deploy.bypass }}
+          bypass: ${{ matrix.bypass }}
           inputs: ${{ needs.initialize.outputs.deployProductionInput }}
 

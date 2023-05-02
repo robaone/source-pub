@@ -142,7 +142,7 @@ ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
 
 # THEN
 
-assert_equals '{"include":[{"project":"project","os":"ubuntu-latest","target":"ios","workflow":"custom-workflow"}]}' "$ACTUAL_RESULT"
+assert_equals '{"include":[{"project":"project","os":"ubuntu-latest","target":"ios","workflow":"custom-workflow","bypass":"false"}]}' "$ACTUAL_RESULT"
 
 echo Scenario: Generate a matrix object string with a base custom workflow dispatch
 
@@ -165,4 +165,4 @@ ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
 
 # THEN
 
-assert_equals '{"include":[{"project":"project","os":"ubuntu-latest","target":"ios","workflow":"custom-workflow"}]}' "$ACTUAL_RESULT"
+assert_equals '{"include":[{"project":"project","os":"ubuntu-latest","target":"ios","workflow":"custom-workflow","bypass":"false"}]}' "$ACTUAL_RESULT"

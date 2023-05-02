@@ -143,7 +143,7 @@ function generate_matrix_object() {
         fi
         CUSTOM_WORKFLOW=$(get_workflow "$project_json" "$JOB_NAME" "$TARGET")
         if [ "$CUSTOM_WORKFLOW" != "null" ] && [ "$CUSTOM_WORKFLOW" != "" ]; then
-          matrix_object="${matrix_object}{\"project\":\"${project}\",\"os\":$OS,\"target\":\"$TARGET\",\"workflow\":\"$CUSTOM_WORKFLOW\"},"
+          matrix_object="${matrix_object}{\"project\":\"${project}\",\"os\":$OS,\"target\":\"$TARGET\",\"workflow\":\"$CUSTOM_WORKFLOW\",\"bypass\":\"false\"},"
         else
           matrix_object="${matrix_object}{\"project\":\"${project}\",\"os\":$OS,\"target\":\"$TARGET\"},"
         fi
