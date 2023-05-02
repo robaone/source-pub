@@ -17,14 +17,7 @@ jobs:
         uses: styfle/cancel-workflow-action@0.9.0
         with:
           access_token: ${{ github.token }}
-      - name: Get Pull Request Info
-        uses: 8BitJonny/gh-get-current-pr@2.0.0
-        id: PR
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          # Verbose setting SHA when using Pull_Request event trigger to fix #16
-          sha: ${{ github.event.pull_request.head.sha }}
-          # Only return if PR is still open
-          filterOutClosed: true
-          # Only return if PR is not in draft state
-          filterOutDraft: 0
+      - name: Print all github variables
+        run: echo "$JSON"
+        env:
+          JSON: ${{ toJson(github) }}
