@@ -71,7 +71,7 @@ jobs:
     needs: [initialize]
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix-unit-test) }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
@@ -106,7 +106,7 @@ jobs:
     environment: sandbox
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix-feature-test) }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
@@ -171,7 +171,7 @@ jobs:
     environment: sandbox
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     if: |
       github.event_name == 'pull_request' &&
@@ -246,7 +246,7 @@ jobs:
     environment: develop
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     if: |
       github.event_name == 'push' &&
@@ -283,7 +283,7 @@ jobs:
     environment: staging
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     if: |
       github.event_name == 'pull_request' && github.base_ref == 'main' &&
@@ -356,7 +356,7 @@ jobs:
     environment: production
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     if: |
       github.event_name == 'push' &&
