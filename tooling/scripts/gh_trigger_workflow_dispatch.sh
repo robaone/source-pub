@@ -60,6 +60,8 @@ function trigger_workflow_dispatch() {
   local workflow_id="$1"
   local branch_name="$2"
   # Trigger the workflow dispatch
+  echo "Triggering workflow dispatch for workflow $workflow_id on branch $branch_name"
+  echo "With payload: {\"ref\":\"$branch_name\"$INPUTS_SUFFIX}"
   $CURL_PATH -X POST \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
