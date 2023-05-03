@@ -43,11 +43,10 @@ jobs:
       - name: Get PR Info
         id: e2e
         run: |
-          gh pr view ${{ github.event.number }} --json body > pr_info.json
+          gh pr view ${{ github.event.number }} --json body || true> pr_info.json
           echo "## PR Info"
           cat pr_info.json | jq -r '.body'
-          cat pr_info.json | jq -r '.body' | grep '\[x\] Skip e2e'
-          SKIP_E2E=$(cat pr_info.json | jq -r '.body' | grep '\[x\] Skip e2e')
+          SKIP_E2E=$(cat pr_info.json | jq -r '.body' | grep '\[x\] Skip e2e' || true)
           if [ "$SKIP_E2E" == "" ]; then
             echo "Skip E2E is not set"
             echo "skipE2E=false" >> $GITHUB_OUTPUT
