@@ -45,6 +45,8 @@ jobs:
           gh pr view ${{ github.event.number }} --json description > pr_info.json
           echo "## PR Info"
           cat pr_info.json
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Set Dynamic Matrix
         id: setmatrix
         run: |
