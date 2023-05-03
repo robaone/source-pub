@@ -44,7 +44,7 @@ jobs:
         id: e2e
         run: |
           SKIP_E2E="$(./tooling/scripts/determine_skip_e2e.sh)"
-          echo "SKIP_E2E=$SKIP_E2E" >> $GITHUB_OUTPUT
+          echo "skipE2E=$SKIP_E2E" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}
           EVENT_NUMBER: ${{ github.event.number }}
