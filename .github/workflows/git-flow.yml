@@ -153,6 +153,9 @@ jobs:
         run: |
           SKIP_CD="$(./tooling/scripts/determine_skip_cd.sh)"
           echo "skipCD=$SKIP_CD" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NUMBER: ${{ github.event.number }}
       - name: Announce Deployment
         if: steps.cd.outputs.skipCD != 'true'
         run: echo "This will be deployed"
