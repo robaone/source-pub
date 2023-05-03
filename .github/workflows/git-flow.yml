@@ -153,6 +153,10 @@ jobs:
         run: |
           SKIP_CD="$(./tooling/scripts/determine_skip_cd.sh)"
           echo "skipCD=$SKIP_CD" >> $GITHUB_OUTPUT
+          if [ "$SKIP_CD" == "true" ]; then
+            echo "Deployment will be skipped"
+            exit 1
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
           EVENT_NUMBER: ${{ github.event.number }}
