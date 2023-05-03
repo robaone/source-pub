@@ -150,7 +150,7 @@ jobs:
       - name: Get PR Info
         id: cd
         run: |
-          SKIP_E2E="$(./tooling/scripts/determine_skip_e2e.sh)"
+          SKIP_CD="$(./tooling/scripts/determine_skip_cd.sh)"
           echo "skipCD=$SKIP_CD" >> $GITHUB_OUTPUT
       - name: Announce Deployment
         if: steps.cd.outputs.skipCD != 'true'
