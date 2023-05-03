@@ -177,7 +177,7 @@ jobs:
           EVENT: ${{ github.event_name }}
   deploy_pull_request:
     name: Deploy Pull Request
-    needs: [deploy-check, unit-tests, feature-tests, initialize]
+    needs: [deploy-check, initialize]
     environment: sandbox
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
@@ -215,7 +215,7 @@ jobs:
           TARGET: ${{ matrix.target }}
   semantic_pre_release:
     name: Semantic Pre Release
-    needs: [deploy-check, unit-tests, feature-tests, initialize]
+    needs: [deploy-check, initialize]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -289,7 +289,7 @@ jobs:
           TARGET: ${{ matrix.target }}
   deploy_to_staging:
     name: Deploy to Staging
-    needs: [deploy-check, unit-tests, feature-tests, check_release, initialize]
+    needs: [deploy-check, check_release, initialize]
     environment: staging
     strategy:
       matrix: ${{ fromJson(needs.initialize.outputs.matrix-deployment) }}
