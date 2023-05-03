@@ -1,15 +1,15 @@
 {
   "name": "source-pub",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Ansel Robateau's source code ",
   "dependencies": {
     "markdown-toc": "^1.2.0"
   },
   "devDependencies": {
     "@semantic-release/github": "^8.0.7",
-    "@semantic-release/release-notes-generator": "^10.0.3",
+    "@semantic-release/release-notes-generator": "^11.0.1",
     "git-cz": "^4.9.0",
-    "semantic-release": "^20.1.1"
+    "semantic-release": "^21.0.2"
   },
   "scripts": {
     "build": "echo \"Not yet implemented\"",
