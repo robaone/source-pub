@@ -162,4 +162,9 @@ function generate_matrix_object() {
   echo $matrix_object
 }
 
+if [ "$JOB_NAME" == "featureTest" ] && [ "$SKIP_E2E" == "true" ]; then
+  echo "{\"include\":[]}"
+  exit 0
+fi
+
 generate_matrix_object "$PROJECTS"
