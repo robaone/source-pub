@@ -43,19 +43,11 @@ jobs:
       - name: Get PR Info
         id: e2e
         run: |
-          gh pr view ${{ github.event.number }} --json body || true > pr_info.json
-          echo "## PR Info"
-          cat pr_info.json | jq -r '.body'
-          SKIP_E2E=$(cat pr_info.json | jq -r '.body' | grep '\[x\] Skip e2e' || true)
-          if [ "$SKIP_E2E" == "" ]; then
-            echo "Skip E2E is not set"
-            echo "skipE2E=false" >> $GITHUB_OUTPUT
-          else
-            echo "Skip E2E is set"
-            echo "skipE2E=true" >> $GITHUB_OUTPUT
-          fi
+          SKIP_E2E="$(./tooling/scripts/determine_skip_e2e.sh)"
+          echo "SKIP_E2E=$SKIP_E2E" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}
+          EVENT_NUMBER: ${{ github.event.number }}
       - name: Set Dynamic Matrix
         id: setmatrix
         run: |
