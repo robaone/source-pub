@@ -42,7 +42,7 @@ jobs:
           cat modified_files.txt | ./tooling/scripts/parse_file_list_for_projects.sh > project_list.txt
       - name: Get PR Info
         run: |
-          gh pr view ${{ github.event.number }} --json description > pr_info.json
+          gh pr view ${{ github.event.number }} --json body > pr_info.json
           echo "## PR Info"
           cat pr_info.json
         env:
