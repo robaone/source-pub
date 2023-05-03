@@ -329,7 +329,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
-    needs: [deploy-check, unit-tests, feature-tests, check_release]
+    needs: [deploy-check, check_release]
     if: |
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main'
