@@ -90,7 +90,7 @@ export MOCK_ARGUMENT_FILE=$(mktemp)
 export MOCK_TRACKING_FILE=$(mktemp)
 export MOCK_RESPONSES='[{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}]'
 export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
-export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
+export CAT_CMD=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 
@@ -112,7 +112,7 @@ export MOCK_RESPONSES='[
 {"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}
 ]'
 export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
-export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
+export CAT_CMD=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 
@@ -134,7 +134,7 @@ export MOCK_RESPONSES='[
 {"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}
 ]'
 export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
-export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
+export CAT_CMD=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 
@@ -157,7 +157,7 @@ export MOCK_RESPONSES='[
 {"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}
 ]'
 export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
-export JQ_CMD=$SCRIPT_DIR/mock_cmd.sh
+export CAT_CMD=$SCRIPT_DIR/mock_cmd.sh
 
 # WHEN
 
@@ -166,3 +166,28 @@ ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
 # THEN
 
 assert_equals '{"include":[{"project":"project","os":"ubuntu-latest","target":"ios","workflow":"custom-workflow","bypass":"false"}]}' "$ACTUAL_RESULT"
+
+echo Scenario: Generate a matrix object and skip e2e tests
+
+# GIVEN
+
+PACKAGE_JSON='{ "workflow": { "default": { "targets": [ { "target":"ios", "workflow": "custom-workflow" }]}}}'
+unset DEFAULT_OS
+export PROJECTS="project"
+export MOCK_ARGUMENT_FILE=$(mktemp)
+export MOCK_TRACKING_FILE=$(mktemp)
+export MOCK_RESPONSES='[
+{"stdout":"1"},{"stdout":"'$( echo $PACKAGE_JSON | sed 's/"/\\"/g' )'"}
+]'
+export FILE_EXISTS_CMD=$SCRIPT_DIR/mock_cmd.sh
+export CAT_CMD=$SCRIPT_DIR/mock_cmd.sh
+export SKIP_E2E=true
+export JOB_NAME=featureTest
+
+# WHEN
+
+ACTUAL_RESULT=$(echo "$PROJECTS" | $CMD)
+
+# THEN
+
+assert_equals '{"include":[]}' "$ACTUAL_RESULT"
