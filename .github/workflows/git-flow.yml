@@ -40,6 +40,11 @@ jobs:
           echo "## Modified Files"
           cat modified_files.txt
           cat modified_files.txt | ./tooling/scripts/parse_file_list_for_projects.sh > project_list.txt
+      - name: Get PR Info
+        run: |
+          gh pr view ${{ github.event.number }} --json description > pr_info.json
+          echo "## PR Info"
+          cat pr_info.json
       - name: Set Dynamic Matrix
         id: setmatrix
         run: |
