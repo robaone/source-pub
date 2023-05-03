@@ -146,11 +146,17 @@ jobs:
     needs: [unit-tests, feature-tests]
     runs-on: ubuntu-latest
     timeout-minutes: 1
-    if: |
-      !contains(github.event.pull_request.body, '[x] Skip CD')
     steps:
+      - name: Get PR Info
+        id: cd
+        run: |
+          SKIP_E2E="$(./tooling/scripts/determine_skip_e2e.sh)"
+          echo "skipCD=$SKIP_CD" >> $GITHUB_OUTPUT
       - name: Announce Deployment
+        if: steps.cd.outputs.skipCD != 'true'
         run: echo "This will be deployed"
+    outputs:
+        skipCD: ${{ steps.cd.outputs.skipCD }}
   check_release:
     name: Check Release
     timeout-minutes: 5
@@ -184,6 +190,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     if: |
+      jobs.deploy-check.outputs.skipCD != 'true' &&
       github.event_name == 'pull_request' &&
       github.base_ref == 'develop' &&
       !(startsWith(github.head_ref,'release/v') || startsWith(github.head_ref,'hotfix/v'))
@@ -221,6 +228,7 @@ jobs:
     permissions:
       contents: write
     if: |
+      jobs.deploy-check.outputs.skipCD != 'true' &&
       github.event_name == 'push' &&
       github.ref == 'refs/heads/develop'
     outputs:
@@ -259,6 +267,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     if: |
+      jobs.deploy-check.outputs.skipCD != 'true' &&
       github.event_name == 'push' &&
       github.ref == 'refs/heads/develop'
     steps:
@@ -296,6 +305,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 15
     if: |
+      jobs.deploy-check.outputs.skipCD != 'true' &&
       github.event_name == 'pull_request' && github.base_ref == 'main' &&
       (startsWith(github.head_ref, 'release/v') || startsWith(github.head_ref, 'hotfix/v'))
     steps:
@@ -331,6 +341,7 @@ jobs:
       contents: write
     needs: [deploy-check, check_release]
     if: |
+      jobs.deploy-check.outputs.skipCD != 'true' &&
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main'
     outputs:
