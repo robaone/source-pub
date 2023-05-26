@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [ "$VERSIONS" == "" ]; then
-  VERSIONS="$(git tag -l "v*" | grep "^v[0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*$")"
+if [ "GIT_CMD_PATH" == "" ]; then
+  GIT_CMD_PATH="$(which git)"
 fi
+
+VERSIONS="$($GIT_CMD_PATH tag -l "v*" | grep "^v[0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*$")"
 
 function convert_to_number() {
 
