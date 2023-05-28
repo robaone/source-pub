@@ -172,6 +172,9 @@ function generateEODMessage() {
   const service = new EndOfDaySummaryService(translator, sheet);
   const [today, tomorrow] = getTodayRange();
   const activity = service.getActivity(today, tomorrow);
+  if(activity.length == 0){
+    return undefined;
+  }
   Logger.log(JSON.stringify(activity));
   const formatted_message = service.format(activity);
   Logger.log(formatted_message);
@@ -183,6 +186,9 @@ function generateEOD() {
     return;
   }
   const formatted_message = generateEODMessage();
+  if(formatted_message === undefined){
+    return;
+  }
   sendSlackMessage(`*Today's Activity*\n\n${formatted_message}`);
   const open_ai = new OpenAI(UrlFetchApp.fetch, PropertiesService.getScriptProperties().getProperty('open_ai_key'));
   const response = open_ai.sendRequest('gpt-3.5-turbo',`${PROMPT};\n${formatted_message}`);
