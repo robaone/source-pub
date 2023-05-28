@@ -172,7 +172,7 @@ function generateEODMessage() {
   const service = new EndOfDaySummaryService(translator, sheet);
   const [today, tomorrow] = getTodayRange();
   const activity = service.getActivity(today, tomorrow);
-  if(activity.length == 0){
+  if(Object.keys(activity).length == 0){
     return undefined;
   }
   Logger.log(JSON.stringify(activity));
