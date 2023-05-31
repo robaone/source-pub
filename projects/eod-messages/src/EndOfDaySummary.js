@@ -29,9 +29,8 @@ class EndOfDaySummaryService {
       const card_id = payload.action.data.card.id;
       const checkItem = { 
         name:payload.action.data?.checkItem?.name,
-        state:payload.action.data?.checkItem?.state
+        state:this.normalizeState(payload.action.data?.checkItem?.state)
       }
-      
       const parsed_data = data[5] === 'updateCheckItemStateOnCard' 
         ? {date, title, checkItem, card_id}
         : {text, date, title, card_id}
@@ -39,6 +38,15 @@ class EndOfDaySummaryService {
       return parsed_data
     })
     return this.groupAndSort(parsed_data);
+  }
+
+  normalizeState(state) {
+    switch(state) {
+      case 'complete':
+        return 'Completed';
+      default:
+        return state;
+    }
   }
 
   groupAndSort(parsed_data) {
@@ -77,7 +85,7 @@ function truncateString(str, num) {
   }
 }
 
-function sendSlackMessage(message) {
+function sendSlackMessage(message, title) {
   var url = PropertiesService.getScriptProperties().getProperty('slack_webhook');
   var payload = {
     'text': "",
@@ -86,7 +94,7 @@ function sendSlackMessage(message) {
         'type': "section",
         'text': {
           'type': 'mrkdwn',
-          'text': '*Here\'s your end of day summary*'
+          'text': `*${title}*`
         }
       },
       {
@@ -193,5 +201,5 @@ function generateEOD() {
   const open_ai = new OpenAI(UrlFetchApp.fetch, PropertiesService.getScriptProperties().getProperty('open_ai_key'));
   const response = open_ai.sendRequest('gpt-3.5-turbo',`${PROMPT};\n${formatted_message}`);
   Logger.log(JSON.stringify(response));
-  sendSlackMessage(response.choices[0]?.message.content);
+  sendSlackMessage(response.choices[0]?.message.content,'Here\'s your end of day summary');
 }
