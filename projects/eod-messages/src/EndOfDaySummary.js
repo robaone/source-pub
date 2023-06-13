@@ -87,24 +87,26 @@ function truncateString(str, num) {
 
 function sendSlackMessage(message, title) {
   var url = PropertiesService.getScriptProperties().getProperty('slack_webhook');
+  var title_block = {
+    'type': "section",
+    'text': {
+      'type': 'mrkdwn',
+      'text': `*${title}*`
+    }
+  };
+  var content_block = {
+    'type': "section",
+    'text': {
+      'type': "mrkdwn",
+      'text': message
+    }
+  };
+  var payload_blocks = title 
+    ? [title_block,content_block]
+    : [content_block];
   var payload = {
     'text': "",
-    'blocks': [
-      {
-        'type': "section",
-        'text': {
-          'type': 'mrkdwn',
-          'text': `*${title}*`
-        }
-      },
-      {
-        'type': "section",
-        'text': {
-          'type': "mrkdwn",
-          'text': message
-        }
-      }
-    ] 
+    'blocks': payload_blocks
   };
   var options = {
     'method': 'post',
