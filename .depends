@@ -1,2 +1,4 @@
 .github/workflows/*
 tooling/scripts/*
+package.json
+package-lock.json
