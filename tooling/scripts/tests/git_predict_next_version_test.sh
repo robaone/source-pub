@@ -86,7 +86,7 @@ Date: my date
     * fix: 🐛 BILL-213 fix broken tests
 
 '
-EXPECTED_VERSION=1.24.0
+EXPECTED_VERSION=1.23.5
 
 # WHEN
 ACTUAL_RESULT=$(eval $CMD)
@@ -113,3 +113,24 @@ ACTUAL_RESULT=$(eval $CMD)
 
 #THEN
 assert_equals $EXPECTED_VERSION $ACTUAL_RESULT
+
+echo Scenario: Discern commit message types
+
+# GIVEN
+export CURRENT_VERSION=1.23.5
+export GIT_LOGS='commit 00000000000000
+Author: Me
+Date: my date
+
+     fix: My squashed commit
+    
+    * feat: 🎸 BILL-213 add script for predicting next version with tests
+    
+    * test: 💍 BILL-213 setup unit tests
+    
+    * ci: 🎡 BILL-213 add dependency in workflow
+    
+    * fix: 🐛 BILL-213 fix broken tests
+
+'
+EXPECTED_VERSION=1.23.6
