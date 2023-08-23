@@ -286,7 +286,6 @@ jobs:
       - name: Setup Node
         run: |
           npm i
-          sudo apt-get install awscli
         working-directory: projects/${{ matrix.project }}
       - name: Install Dependencies
         run: |
