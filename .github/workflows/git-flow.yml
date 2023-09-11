@@ -32,7 +32,7 @@ jobs:
           JSON: ${{ toJson(github) }}
       - uses: actions/checkout@v4
       - id: files
-        uses: tj-actions/changed-files@v38.2.1
+        uses: tj-actions/changed-files@v39.0.1
       - name: List files modified
         id: project_list
         run: |
