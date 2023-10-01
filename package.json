@@ -9,7 +9,7 @@
     "@semantic-release/github": "^9.0.7",
     "@semantic-release/release-notes-generator": "^12.0.0",
     "git-cz": "^4.9.0",
-    "semantic-release": "^22.0.0"
+    "semantic-release": "^22.0.5"
   },
   "scripts": {
     "build": "echo \"Not yet implemented\"",
