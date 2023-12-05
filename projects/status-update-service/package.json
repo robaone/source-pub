@@ -1,0 +1,16 @@
+{
+  "name": "status-update-service",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"not yet implemented\"",
+    "test:e2e": "echo \"not yet implemented\"",
+    "build": "echo \"Not yet implemented\"",
+    "deploy:pr": "echo \"Not yet implemented\"",
+    "deploy:develop": "echo \"not yet implemented\"",
+    "deploy:staging": "echo \"not yet implemented\"",
+    "deploy:production": "echo \"not yet implemented\""
+  },
+  "dependencies": {},
+  "devDependencies": {
+  }
+}
