@@ -9,5 +9,5 @@ export INPUTS='{"target":"'$TARGET'"}'
 
 echo "Inputs: $INPUTS"
 
-$SCRIPT_DIR/../../../tooling/scripts/gh_trigger_workflow_dispatch.sh
+#$SCRIPT_DIR/../../../tooling/scripts/gh_trigger_workflow_dispatch.sh
 exit $?
