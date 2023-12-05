@@ -53,8 +53,6 @@ fi
 if [ "$NEXT_PREDICTED_RELEASE" != "$PACKAGE_VERSION" ]; then
   echo "Release Version = $NEXT_PREDICTED_RELEASE";
   echo "Package Version = $PACKAGE_VERSION";
-  echo "
-See: https://github.com/casechek/Answers/discussions/158"
   exit 1
 else
   echo "Everything is good.  Ready to release"
