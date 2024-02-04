@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: {{ env.NODE_VERSION }}
+          node-version: '{{ env.NODE_VERSION }}'
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.12.1
         with:
