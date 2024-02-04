@@ -1,5 +1,6 @@
 function onFormSubmit(event) {
-  const container = new Container();
+  const email = event.values[3];
+  const container = new Container(email);
   var log_sheet = container.spreadsheet.getSheetByName("Logs");
   if(log_sheet == undefined){
     log_sheet = container.spreadsheet.insertSheet("Logs");
@@ -14,32 +15,6 @@ function onFormSubmit(event) {
 }
 
 function test_formSubmit() {
-  const event = {
-    "authMode": "FULL",
-    "namedValues": {
-      "Timestamp": [
-        "2/4/2024 8:08:19"
-      ],
-      "Enter your description details": [
-        "This is a test"
-      ],
-      "What type of ticket is this": [
-        "Story"
-      ]
-    },
-    "range": {
-      "columnEnd": 1,
-      "columnStart": 1,
-      "rowEnd": 1,
-      "rowStart": 1
-    },
-    "source": {},
-    "triggerUid": "24782037",
-    "values": [
-      "2/4/2024 8:08:19",
-      "Story",
-      "This is a test"
-    ]
-  };
+  const event = {"authMode":"FULL","namedValues":{"Enter your description details":["I need to collect email addresses for the ticket suggestion form.  It is not collecting them at this time."],"What type of ticket is this":["Bug"],"Timestamp":["2/4/2024 8:23:30"],"Email Address":["user@domain.com"]},"range":{"columnEnd":4,"columnStart":1,"rowEnd":7,"rowStart":7},"source":{},"triggerUid":"24782037","values":["2/4/2024 8:23:30","Bug","I need to collect email addresses for the ticket suggestion form.  It is not collecting them at this time.","user@domain.com"]};
   onFormSubmit(event);
 }
