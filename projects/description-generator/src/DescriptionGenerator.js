@@ -7,7 +7,7 @@ class DescriptionGenerator {
     this.BUG = 'bug';
   }
   generate(description,type) {
-    switch(type){
+    switch(type.trim().toLowerCase()){
       case this.STORY:
         Logger.log(`story: ...`);
         return this.transform(description,this.story_template);
