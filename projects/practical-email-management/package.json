@@ -4,12 +4,12 @@
   "description": "Practical Email Management in Gmail",
   "main": "index.js",
   "scripts": {
-    "test": "./scripts/run-unit-tests.sh",
+    "test": "echo \"Not yet implemented\"",
     "test:e2e": "echo \"Not yet implemented\"",
-    "build": "./build.sh",
+    "build": "echo \"N/A\"",
     "push": "cd build && npx clasp push -f",
-    "deploy": "cd build && npx clasp push -f && npx clasp deploy -i \"$(cat ../deploy_id.txt)\" -d \"$(git log --pretty=format:'%s' -1)\" ",
-    "deploy:pr": "./scripts/deploy-pr.sh",
+    "deploy": "echo \"Not yet implemented\"",
+    "deploy:pr": "echo \"Not yet implemented\"",
     "deploy:develop": "echo \"Not yet implemented\"",
     "deploy:staging": "echo \"Not yet implemented\"",
     "deploy:production": "echo \"Not yet implemented\""
