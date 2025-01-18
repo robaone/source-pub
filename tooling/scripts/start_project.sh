@@ -27,6 +27,11 @@ fi
 mkdir "$SCRIPT_DIR/../../projects/$1"
 
 # Copy the package.json file
+if [ ! -f "$SCRIPT_DIR/../templates/package.json" ]; then
+  echo "package.json template not found"
+  exit 1
+fi
+
 cp "$SCRIPT_DIR/../templates/package.json" "$SCRIPT_DIR/../../projects/$1/package.json"
 
 # Create README.md file
