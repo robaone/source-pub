@@ -47,6 +47,10 @@ function is_empty_string() {
   fi
 }
 
+function git_repo_root_path() {
+  git rev-parse --show-toplevel
+}
+
 if [ "$(is_empty_string "$PROJECTS")" == "1" ]; then
   echo "{\"include\":[]}"
   exit 0
@@ -77,7 +81,8 @@ function get_workflow_os () {
 function get_targets () {
   local project_json="$1"
   local job=$2
-  local project_path="$SCRIPT_DIR/../../projects/$project"
+  local root_path=$3
+  local project_path="${root_path}/$project"
   local targets=$(echo "$project_json" | jq -rc .workflow.${job}.targets 2>/dev/null)
   if [ "$targets" == "" ]; then
     targets="null"
@@ -118,15 +123,16 @@ function get_workflow() {
 
 function generate_matrix_object() {
   local projects="$1"
+  local root_path="$2"
   local matrix_object="{\"include\":["
   for project in $projects; do
-    local project_path="$SCRIPT_DIR/../../projects/$project"
+    local project_path="${root_path}/$project"
     if [ "$(file_exists "$project_path/package.json")" != "1" ]; then
       continue
     fi
     local project_json=$($CAT_CMD "$project_path/package.json")
     local WORKFLOW_OS=$(get_workflow_os "$project_json" "$JOB_NAME")
-    TARGETS=$(get_targets "$project_json" "$JOB_NAME")
+    TARGETS=$(get_targets "$project_json" "$JOB_NAME" "$root_path")
     if [ "$TARGETS" != "[]" ]; then
       local index=0
       while [ $index -lt $(echo "$TARGETS" | jq -r '. | length') ]; do
@@ -167,4 +173,10 @@ if [ "$JOB_NAME" == "featureTest" ] && [ "$SKIP_E2E" == "true" ]; then
   exit 0
 fi
 
-generate_matrix_object "$PROJECTS"
+if [ "$PROJECT_ROOT" == "" ] || [ "$PROJECT_ROOT" == "." ]; then
+  PROJECT_PATH=$(git_repo_root_path)
+else
+  PROJECT_PATH=$(git_repo_root_path)/$PROJECT_ROOT
+fi
+
+generate_matrix_object "$PROJECTS" "$PROJECT_PATH"
