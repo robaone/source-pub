@@ -1,4 +1,7 @@
 function Test(testClass) {
+  if (!testClass || typeof testClass !== 'object') {  
+    throw new Error('Test class must be a valid object');  
+  }
   this.tests = testClass;
   this.run = function(){
     var objectKeys = Object.keys(this.tests);
@@ -57,12 +60,6 @@ var Assert = {
   }
 };
 
-
-function test_assertTrue(value) {
-  if(!value){
-    throw "Expected true but received ("+value+")";
-  }
-};
 
 class ExampleTest {
   before() {
