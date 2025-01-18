@@ -1,5 +1,5 @@
 {
-  "name": "gapps-html-to-google-doc",
+  "name": "gapps-unit-test-library",
   "version": "0.1.0",
   "scripts": {
     "build": "echo \"Not yet implemented\"",
