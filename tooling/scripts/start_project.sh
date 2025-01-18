@@ -33,5 +33,8 @@ cp "$SCRIPT_DIR/../templates/package.json" "$SCRIPT_DIR/../../projects/$1/packag
 echo "# $1" > "$SCRIPT_DIR/../../projects/$1/README.md"
 
 # Replace the project name in the package.json file
-sed -i '' "s/PROJECT_NAME/$1/g" "$SCRIPT_DIR/../../projects/$1/package.json"
+case "$(uname)" in
+  Darwin*) sed -i '' "s/PROJECT_NAME/$1/g" "$SCRIPT_DIR/../../projects/$1/package.json" ;;
+  *) sed -i "s/PROJECT_NAME/$1/g" "$SCRIPT_DIR/../../projects/$1/package.json" ;;
+esac
 
