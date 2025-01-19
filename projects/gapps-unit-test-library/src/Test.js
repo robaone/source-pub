@@ -1,4 +1,7 @@
 function Test(testClass) {
+    if (!testClass || typeof testClass !== 'object') {  
+        throw new Error('Test class must be a valid object');  
+    }
     const tests = testClass;
     this.run = function () {
         const results = { passed: 0, failed: 0, errors: [] };
