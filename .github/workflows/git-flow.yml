@@ -6,6 +6,7 @@ on:
       - develop
       - main
   pull_request:
+    types: [ready_for_review, synchronize, opened]
     branches:
       - feature/*
       - develop
@@ -17,6 +18,7 @@ jobs:
   initialize:
     name: Initialize
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.draft == false }}
     timeout-minutes: 5
     steps:
       - uses: actions/setup-node@v4
