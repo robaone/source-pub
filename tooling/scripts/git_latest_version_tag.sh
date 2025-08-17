@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ "GIT_CMD_PATH" == "" ]; then
-  GIT_CMD_PATH="$(which git)"
+if [ -z "${GIT_CMD_PATH:-}" ]; then
+  GIT_CMD_PATH="$(command -v git)"
 fi
 
 VERSIONS="$($GIT_CMD_PATH tag -l "v*" | grep "^v[0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*$")"
