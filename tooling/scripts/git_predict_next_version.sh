@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE_FOLDER=$(dirname $0)
+BASE_FOLDER=$(dirname $BASH_SOURCE)
 if [ "$CURRENT_VERSION" == "" ] && [ "$TESTING" != "true" ]; then
   CURRENT_VERSION=$($BASE_FOLDER/git_latest_version_tag.sh)
 fi
@@ -25,17 +25,14 @@ function get_logs() {
   fi
 }
 
-if [ "$(get_logs | grep "^\s*BREAKING CHANGE:")" != "" ] || [ "$(get_logs | grep "^\s*[*]\sBREAKING CHANGE:")" != "" ] ; then
-  # increment major version
+if [ "$(get_logs | grep "^\s*BREAKING CHANGE:")" != "" ]; then
   major=$((major+1))
   minor=0
   patch=0
-elif [ "$(get_logs | grep "^\s*feat[(:]")" != "" ] || [ "$(get_logs | grep "^\s*[*]\sfeat[(:]")" != "" ]; then
-  # increment minor version
+elif [ "$(get_logs | grep "^\s*feat[(:]")" != "" ]; then
   minor=$((minor+1))
   patch=0
-elif [ "$(get_logs | grep "^\s*fix[(:]")" != "" ] || [ "$(get_logs | grep "^\s*[*]\sfix[(:]")" != "" ]; then
-  # increment patch version
+elif [ "$(get_logs | grep "^\s*fix[(:]")" != "" ]; then
   patch=$((patch+1))
 fi
 

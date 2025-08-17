@@ -1,13 +1,10 @@
-const MailRecovery = require("./MailRecovery");
-
-// start-app-script
 function configure() {
   const emailService = {
     search:(query) =>{
       var age = new Date();  
       age.setDate(age.getDate() - 90);   
       var purge  = Utilities.formatDate(age, Session.getTimeZone(), "yyyy-MM-dd");
-      const result = GmailApp.search(`-label:Inbox label:unread before:${purge} ${query}`,0,40);
+      const result = GmailApp.search(`-label:Inbox label:unread after:${purge} ${query}`,0,40);
       return result;
     },
     move:(email) =>{
@@ -31,4 +28,3 @@ function configure() {
     queryService
   };
 }
-// end-app-script

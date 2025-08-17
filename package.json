@@ -6,19 +6,20 @@
     "markdown-toc": "^1.2.0"
   },
   "devDependencies": {
-    "@semantic-release/github": "^8.0.7",
-    "@semantic-release/release-notes-generator": "^11.0.1",
+    "@semantic-release/github": "^11.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.1",
     "git-cz": "^4.9.0",
-    "semantic-release": "^21.0.2"
+    "semantic-release": "^24.2.3"
   },
   "scripts": {
     "build": "echo \"Not yet implemented\"",
-    "start:feature": "./tooling/scripts/start_feature.sh",
     "deploy:pr": "echo \"Not yet implemented\"",
     "deploy:develop": "echo \"Not yet implemented\"",
     "deploy:staging": "echo \"Not yet implemented\"",
     "deploy:production": "echo \"Not yet implemented\"",
     "install:dependencies": "echo \"Not yet implemented\"",
+    "start:feature": "./tooling/scripts/start_feature.sh",
+    "start:project": "./tooling/scripts/start_project.sh",
     "start:hotfix": "./tooling/scripts/start_hotfix.sh",
     "start:release": "./tooling/scripts/start_release.sh",
     "test": "./tooling/scripts/run_tests.sh",

@@ -1,4 +1,3 @@
-// start-app-script
 class MailRecovery {
   constructor(emailService,queryService){
     this.emailService = emailService;
@@ -21,7 +20,3 @@ class MailRecovery {
     });
   }
 }
-
-// end-app-script
-
-module.exports = MailRecovery;
