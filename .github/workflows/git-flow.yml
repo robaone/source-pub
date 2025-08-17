@@ -184,11 +184,12 @@ jobs:
           tooling/scripts/tests/check_release_version_test.sh "$(pwd)/tooling/scripts/check_release_version.sh" "$(pwd)/tooling/scripts/tests"
       - name: Confirm Release Version
         run: |
-          bash -xv tooling/scripts/check_release_version.sh
+          tooling/scripts/check_release_version.sh
         env:
           CURRENT_BRANCH: ${{ github.head_ref }}
           TARGET_BRANCH: ${{ github.base_ref }}
           EVENT: ${{ github.event_name }}
+          GIT_CMD_PATH: git
   deploy_pull_request:
     name: Deploy Pull Request
     needs: [deploy-check, initialize]
